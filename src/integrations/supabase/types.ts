@@ -14,6 +14,207 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_partitions: {
+        Row: {
+          characteristics: string | null
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          org_type: string | null
+          role_distribution: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          characteristics?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          org_type?: string | null
+          role_distribution?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          characteristics?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          org_type?: string | null
+          role_distribution?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      datasets: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          rationale: string | null
+          source_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          rationale?: string | null
+          source_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          rationale?: string | null
+          source_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      gap_statements: {
+        Row: {
+          checklist: Json | null
+          content: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checklist?: Json | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checklist?: Json | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      jsd_measurements: {
+        Row: {
+          client_a: string
+          client_b: string
+          created_at: string
+          id: string
+          jsd_value: number | null
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          client_a: string
+          client_b: string
+          created_at?: string
+          id?: string
+          jsd_value?: number | null
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          client_a?: string
+          client_b?: string
+          created_at?: string
+          id?: string
+          jsd_value?: number | null
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      literature_papers: {
+        Row: {
+          authors: string | null
+          circle: string
+          created_at: string
+          id: string
+          key_takeaways: string | null
+          relevance_notes: string | null
+          source: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+          year: number | null
+        }
+        Insert: {
+          authors?: string | null
+          circle?: string
+          created_at?: string
+          id?: string
+          key_takeaways?: string | null
+          relevance_notes?: string | null
+          source?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+          year?: number | null
+        }
+        Update: {
+          authors?: string | null
+          circle?: string
+          created_at?: string
+          id?: string
+          key_takeaways?: string | null
+          relevance_notes?: string | null
+          source?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
+      phase_checklist_items: {
+        Row: {
+          checked: boolean
+          created_at: string
+          id: string
+          label: string
+          phase_number: number
+          sort_order: number
+          user_id: string
+        }
+        Insert: {
+          checked?: boolean
+          created_at?: string
+          id?: string
+          label: string
+          phase_number: number
+          sort_order?: number
+          user_id: string
+        }
+        Update: {
+          checked?: boolean
+          created_at?: string
+          id?: string
+          label?: string
+          phase_number?: number
+          sort_order?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       phases: {
         Row: {
           completion_percentage: number

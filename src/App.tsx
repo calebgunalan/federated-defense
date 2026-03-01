@@ -9,6 +9,8 @@ import { AppLayout } from "@/components/AppLayout";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import PhasePage from "./pages/PhasePage";
+import Phase1Page from "./pages/Phase1Page";
+import Phase2Page from "./pages/Phase2Page";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,8 +40,9 @@ const App = () => (
             <Routes>
               <Route path="/auth" element={<AuthRoute />} />
               <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/phase/1" element={<ProtectedRoute><Phase1Page /></ProtectedRoute>} />
+              <Route path="/phase/2" element={<ProtectedRoute><Phase2Page /></ProtectedRoute>} />
               <Route path="/phase/:phaseNumber" element={<ProtectedRoute><PhasePage /></ProtectedRoute>} />
-              <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
         </BrowserRouter>
