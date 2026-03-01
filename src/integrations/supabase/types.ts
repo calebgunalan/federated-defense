@@ -14,6 +14,96 @@ export type Database = {
   }
   public: {
     Tables: {
+      ablation_results: {
+        Row: {
+          accuracy: number | null
+          config_name: string
+          config_type: string
+          created_at: string
+          id: string
+          macro_f1: number | null
+          macro_precision: number | null
+          macro_recall: number | null
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          config_name: string
+          config_type?: string
+          created_at?: string
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          config_name?: string
+          config_type?: string
+          created_at?: string
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      architecture_candidates: {
+        Row: {
+          accuracy: number | null
+          created_at: string
+          description: string | null
+          id: string
+          macro_f1: number | null
+          macro_precision: number | null
+          macro_recall: number | null
+          model_type: string | null
+          name: string
+          notes: string | null
+          selected_for_fl: boolean
+          selection_rationale: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          model_type?: string | null
+          name: string
+          notes?: string | null
+          selected_for_fl?: boolean
+          selection_rationale?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          model_type?: string | null
+          name?: string
+          notes?: string | null
+          selected_for_fl?: boolean
+          selection_rationale?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       client_partitions: {
         Row: {
           characteristics: string | null
@@ -78,6 +168,93 @@ export type Database = {
           name?: string
           rationale?: string | null
           source_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      feature_catalog: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          notes: string | null
+          time_window: string | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          time_window?: string | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          time_window?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fl_experiments: {
+        Row: {
+          accuracy: number | null
+          architecture: string | null
+          auc_roc: number | null
+          client_pairing: string
+          created_at: string
+          experiment_name: string
+          id: string
+          macro_f1: number | null
+          macro_precision: number | null
+          macro_recall: number | null
+          mu_value: number | null
+          notes: string | null
+          training_paradigm: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accuracy?: number | null
+          architecture?: string | null
+          auc_roc?: number | null
+          client_pairing?: string
+          created_at?: string
+          experiment_name: string
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          mu_value?: number | null
+          notes?: string | null
+          training_paradigm?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accuracy?: number | null
+          architecture?: string | null
+          auc_roc?: number | null
+          client_pairing?: string
+          created_at?: string
+          experiment_name?: string
+          id?: string
+          macro_f1?: number | null
+          macro_precision?: number | null
+          macro_recall?: number | null
+          mu_value?: number | null
+          notes?: string | null
+          training_paradigm?: string
           updated_at?: string
           user_id?: string
         }
@@ -275,6 +452,150 @@ export type Database = {
           start_date?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      reviewer_suggestions: {
+        Row: {
+          affiliation: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          relevant_papers: string | null
+          user_id: string
+        }
+        Insert: {
+          affiliation?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          relevant_papers?: string | null
+          user_id: string
+        }
+        Update: {
+          affiliation?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          relevant_papers?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      revision_log: {
+        Row: {
+          created_at: string
+          id: string
+          response: string | null
+          reviewer_comment: string
+          round_number: number
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          response?: string | null
+          reviewer_comment?: string
+          round_number?: number
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          response?: string | null
+          reviewer_comment?: string
+          round_number?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stat_tests: {
+        Row: {
+          comparison: string
+          confidence_interval: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          p_value: number | null
+          significant: boolean | null
+          test_name: string
+          test_statistic: number | null
+          user_id: string
+        }
+        Insert: {
+          comparison?: string
+          confidence_interval?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          p_value?: number | null
+          significant?: boolean | null
+          test_name: string
+          test_statistic?: number | null
+          user_id: string
+        }
+        Update: {
+          comparison?: string
+          confidence_interval?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          p_value?: number | null
+          significant?: boolean | null
+          test_name?: string
+          test_statistic?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      writing_sections: {
+        Row: {
+          created_at: string
+          id: string
+          key_points: Json | null
+          notes: string | null
+          section_name: string
+          section_order: number
+          status: string
+          updated_at: string
+          user_id: string
+          word_count: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key_points?: Json | null
+          notes?: string | null
+          section_name: string
+          section_order?: number
+          status?: string
+          updated_at?: string
+          user_id: string
+          word_count?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key_points?: Json | null
+          notes?: string | null
+          section_name?: string
+          section_order?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+          word_count?: number
         }
         Relationships: []
       }
