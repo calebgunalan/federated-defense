@@ -7,17 +7,15 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppLayout } from "@/components/AppLayout";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
-import PhasePage from "./pages/PhasePage";
-import Phase1Page from "./pages/Phase1Page";
-import Phase2Page from "./pages/Phase2Page";
-import Phase3Page from "./pages/Phase3Page";
-import Phase4Page from "./pages/Phase4Page";
-import Phase5Page from "./pages/Phase5Page";
-import Phase6Page from "./pages/Phase6Page";
-import Phase7Page from "./pages/Phase7Page";
-import Phase8Page from "./pages/Phase8Page";
-import Phase9Page from "./pages/Phase9Page";
+import Page1Dashboard from "./pages/sim/Page1Dashboard";
+import Page2Dataset from "./pages/sim/Page2Dataset";
+import Page3Baseline from "./pages/sim/Page3Baseline";
+import Page4TwoClient from "./pages/sim/Page4TwoClient";
+import Page5ThreeClient from "./pages/sim/Page5ThreeClient";
+import Page6Ablation from "./pages/sim/Page6Ablation";
+import Page7Statistical from "./pages/sim/Page7Statistical";
+import Page8Latex from "./pages/sim/Page8Latex";
+import Page9Submission from "./pages/sim/Page9Submission";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,17 +44,16 @@ const App = () => (
           <AuthProvider>
             <Routes>
               <Route path="/auth" element={<AuthRoute />} />
-              <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/phase/1" element={<ProtectedRoute><Phase1Page /></ProtectedRoute>} />
-              <Route path="/phase/2" element={<ProtectedRoute><Phase2Page /></ProtectedRoute>} />
-              <Route path="/phase/3" element={<ProtectedRoute><Phase3Page /></ProtectedRoute>} />
-              <Route path="/phase/4" element={<ProtectedRoute><Phase4Page /></ProtectedRoute>} />
-              <Route path="/phase/5" element={<ProtectedRoute><Phase5Page /></ProtectedRoute>} />
-              <Route path="/phase/6" element={<ProtectedRoute><Phase6Page /></ProtectedRoute>} />
-              <Route path="/phase/7" element={<ProtectedRoute><Phase7Page /></ProtectedRoute>} />
-              <Route path="/phase/8" element={<ProtectedRoute><Phase8Page /></ProtectedRoute>} />
-              <Route path="/phase/9" element={<ProtectedRoute><Phase9Page /></ProtectedRoute>} />
-              <Route path="/phase/:phaseNumber" element={<ProtectedRoute><PhasePage /></ProtectedRoute>} />
+              <Route path="/" element={<ProtectedRoute><Page1Dashboard /></ProtectedRoute>} />
+              <Route path="/dataset" element={<ProtectedRoute><Page2Dataset /></ProtectedRoute>} />
+              <Route path="/baseline" element={<ProtectedRoute><Page3Baseline /></ProtectedRoute>} />
+              <Route path="/two-client" element={<ProtectedRoute><Page4TwoClient /></ProtectedRoute>} />
+              <Route path="/three-client" element={<ProtectedRoute><Page5ThreeClient /></ProtectedRoute>} />
+              <Route path="/ablation" element={<ProtectedRoute><Page6Ablation /></ProtectedRoute>} />
+              <Route path="/statistical" element={<ProtectedRoute><Page7Statistical /></ProtectedRoute>} />
+              <Route path="/latex" element={<ProtectedRoute><Page8Latex /></ProtectedRoute>} />
+              <Route path="/submission" element={<ProtectedRoute><Page9Submission /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
         </BrowserRouter>
