@@ -3,9 +3,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { THREE_CLIENT_RESULTS, ROC_DATA } from "@/data/simulationData";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from "recharts";
+import { useChartDownload, DownloadButton } from "@/components/ChartDownload";
 
-function ROCCurveChart({ title, data }: { title: string; data: { local: number; centralized: number; fedprox: number } }) {
-  // Generate realistic ROC curve points
+function ROCCurveChart({ title, data, chartRef, onDownload }: { title: string; data: { local: number; centralized: number; fedprox: number }; chartRef: React.RefObject<HTMLDivElement>; onDownload: () => void }) {
   const generateROC = (auc: number) => {
     const points = [{ fpr: 0, tpr: 0 }];
     const n = 20;
@@ -31,16 +31,19 @@ function ROCCurveChart({ title, data }: { title: string; data: { local: number; 
 
   return (
     <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm">{title}</CardTitle>
-        <div className="flex gap-3 text-xs text-muted-foreground font-mono">
-          <span>Local AUC={data.local}</span>
-          <span>Centralized AUC={data.centralized}</span>
-          <span>FedProx AUC={data.fedprox}</span>
+      <CardHeader className="pb-2 flex flex-row items-start justify-between">
+        <div>
+          <CardTitle className="text-sm">{title}</CardTitle>
+          <div className="flex gap-3 text-xs text-muted-foreground font-mono mt-1">
+            <span>Local={data.local}</span>
+            <span>Cent.={data.centralized}</span>
+            <span>FedProx={data.fedprox}</span>
+          </div>
         </div>
+        <DownloadButton onClick={onDownload} label="PNG" />
       </CardHeader>
       <CardContent>
-        <div className="h-56">
+        <div className="h-56" ref={chartRef}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={combined} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -60,13 +63,11 @@ function ROCCurveChart({ title, data }: { title: string; data: { local: number; 
 }
 
 export default function Page5ThreeClient() {
-  const chartData = THREE_CLIENT_RESULTS.filter((r) => r.model === "LSTM" || r.experiment === "FedProx").map((r) => ({
-    name: `${r.model}\n${r.experiment}`,
-    "Avg Accuracy": r.avgAcc,
-    "Avg F1": r.avgF1,
-  }));
+  const [barRef, downloadBar] = useChartDownload("avg_accuracy_bar");
+  const [roc1Ref, downloadRoc1] = useChartDownload("roc_client1");
+  const [roc2Ref, downloadRoc2] = useChartDownload("roc_client2");
+  const [roc3Ref, downloadRoc3] = useChartDownload("roc_client3");
 
-  // Better chart data — one bar per model+experiment
   const barData = THREE_CLIENT_RESULTS.map((r) => ({
     name: `${r.model}-${r.experiment.substring(0, 3)}`,
     "Avg Accuracy": r.avgAcc,
@@ -81,7 +82,6 @@ export default function Page5ThreeClient() {
         <p className="text-muted-foreground mt-1">Full multi-institutional collaboration with all three organizationally heterogeneous clients.</p>
       </div>
 
-      {/* Master results table */}
       <Card>
         <CardHeader><CardTitle className="text-base">Table 6 — Three-Client Federation (All Clients)</CardTitle></CardHeader>
         <CardContent className="overflow-x-auto">
@@ -125,11 +125,13 @@ export default function Page5ThreeClient() {
         </CardContent>
       </Card>
 
-      {/* Average Accuracy Bar Chart */}
       <Card>
-        <CardHeader><CardTitle className="text-base">Average Accuracy Across All Experiments</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Average Accuracy Across All Experiments</CardTitle>
+          <DownloadButton onClick={downloadBar} />
+        </CardHeader>
         <CardContent>
-          <div className="h-72">
+          <div className="h-72" ref={barRef}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} margin={{ top: 5, right: 20, left: 10, bottom: 40 }}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -145,13 +147,12 @@ export default function Page5ThreeClient() {
         </CardContent>
       </Card>
 
-      {/* ROC Curves */}
       <div>
         <h2 className="text-lg font-semibold mb-4">ROC Curves — LSTM: Local vs Centralized vs FedProx</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          <ROCCurveChart title="Client 1 (Financial)" data={ROC_DATA.client1} />
-          <ROCCurveChart title="Client 2 (Healthcare)" data={ROC_DATA.client2} />
-          <ROCCurveChart title="Client 3 (Manufacturing)" data={ROC_DATA.client3} />
+          <ROCCurveChart title="Client 1 (Financial)" data={ROC_DATA.client1} chartRef={roc1Ref} onDownload={downloadRoc1} />
+          <ROCCurveChart title="Client 2 (Healthcare)" data={ROC_DATA.client2} chartRef={roc2Ref} onDownload={downloadRoc2} />
+          <ROCCurveChart title="Client 3 (Manufacturing)" data={ROC_DATA.client3} chartRef={roc3Ref} onDownload={downloadRoc3} />
         </div>
       </div>
     </div>

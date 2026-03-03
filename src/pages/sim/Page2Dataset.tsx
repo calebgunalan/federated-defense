@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { DATASET_TABLE, JSD_VALUES, FEATURE_DISTRIBUTION } from "@/data/simulationData";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useChartDownload, DownloadButton } from "@/components/ChartDownload";
 
 function JSDHeatmap() {
   const clients = ["Client 1", "Client 2", "Client 3"];
@@ -45,6 +46,8 @@ function JSDHeatmap() {
 }
 
 export default function Page2Dataset() {
+  const [featureRef, downloadFeature] = useChartDownload("feature_distribution");
+
   const featureChartData = FEATURE_DISTRIBUTION.map((f) => ({
     name: f.feature.length > 12 ? f.feature.substring(0, 12) + "…" : f.feature,
     fullName: f.feature,
@@ -61,7 +64,6 @@ export default function Page2Dataset() {
         <p className="text-muted-foreground mt-1">Three organizational profiles with quantified non-IID conditions across CERT and LANL benchmarks.</p>
       </div>
 
-      {/* Dataset Table */}
       <Card>
         <CardHeader><CardTitle className="text-base">Dataset Description</CardTitle></CardHeader>
         <CardContent className="overflow-x-auto">
@@ -96,7 +98,6 @@ export default function Page2Dataset() {
         </CardContent>
       </Card>
 
-      {/* JSD Heatmap */}
       <Card>
         <CardHeader><CardTitle className="text-base">Jensen–Shannon Divergence Heatmap</CardTitle></CardHeader>
         <CardContent className="space-y-4">
@@ -107,11 +108,13 @@ export default function Page2Dataset() {
         </CardContent>
       </Card>
 
-      {/* Feature Distribution Chart */}
       <Card>
-        <CardHeader><CardTitle className="text-base">Behavioral Feature Distribution Across Clients</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Behavioral Feature Distribution Across Clients</CardTitle>
+          <DownloadButton onClick={downloadFeature} />
+        </CardHeader>
         <CardContent>
-          <div className="h-80">
+          <div className="h-80" ref={featureRef}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={featureChartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
