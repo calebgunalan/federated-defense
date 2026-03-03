@@ -3,10 +3,9 @@
 export const PAPER_META = {
   title: "A Comparative Analysis of Federated Learning for Cross-Organizational Insider Threat Detection",
   authors: [
-    { name: "Dr. Khalid M. Al-Rashidi", affiliation: "Department of Computer Science, King Fahd University of Petroleum & Minerals, Dhahran 31261, Saudi Arabia" },
-    { name: "Dr. Lena Petrova", affiliation: "Institute for Cybersecurity Research, ETH Zürich, 8092 Zürich, Switzerland" },
-    { name: "Prof. James T. Harrington", affiliation: "School of Computing, University of Edinburgh, Edinburgh EH8 9AB, United Kingdom" },
-    { name: "Dr. Yuki Tanaka", affiliation: "Graduate School of Information Science, Nagoya University, Nagoya 464-8601, Japan" },
+    { name: "Caleb Gunalan", affiliation: "Department of Computer Science and Engineering, Kalasalingam Academy of Research and Education, Krishnankoil, Tamilnadu, India", orcid: "0009-0008-4105-4634", corresponding: true },
+    { name: "Dr. P. Deepalaksmi", affiliation: "Department of Computer Science and Engineering, Kalasalingam Academy of Research and Education, Krishnankoil, Tamilnadu, India", orcid: "0000-0002-1959-3657", corresponding: true },
+    { name: "Dr. Chinnasamy Ponnusamy", affiliation: "Department of Computer Science and Engineering, Kalasalingam Academy of Research and Education, Krishnankoil, Tamilnadu, India", orcid: "0000-0002-3202-4299", corresponding: false },
   ],
   journal: "AI — MDPI Open Access Journal",
   year: 2025,
@@ -16,7 +15,7 @@ export const PAPER_META = {
   keyStats: { clients: 3, architectures: 4, scenarios: 6, experiments: 47 },
   keywords: [
     "Federated Learning", "Insider Threat Detection", "FedAvg", "FedProx",
-    "Non-IID Data", "User Behavior Analytics", "Privacy-Preserving ML", "Cross-Organizational Security"
+    "Non-IID Data", "User Behavior Analytics", "Privacy-Preserving Machine Learning", "Cross-Organizational Security"
   ],
   abstract: `Insider threats represent one of the most challenging cybersecurity risks facing modern organizations, responsible for an estimated 34% of data breaches with average remediation costs exceeding $15.4 million per incident. While machine learning approaches have shown promise in detecting anomalous user behavior, they require access to sensitive behavioral logs that organizations are reluctant to share due to privacy regulations and competitive concerns. Federated Learning (FL) offers a compelling alternative by enabling collaborative model training without raw data exchange. This paper presents a comprehensive comparative analysis of FL frameworks for insider threat detection across organizationally heterogeneous clients. We evaluate four neural network architectures — LSTM, MLP, 1D-CNN, and Autoencoder — under Local, Centralized, FedAvg, and FedProx training paradigms using partitions derived from the CERT Insider Threat Dataset (r4.2, r5.2) and the LANL Unified Host and Network Dataset. Three simulated organizational profiles (Financial Firm, Healthcare Organization, Manufacturing Company) with quantified non-IID conditions (Jensen–Shannon Divergence 0.17–0.31) form the experimental basis. Results from 47 experiments demonstrate that FedProx on LSTM achieves the best three-client federation performance with 75.8% average accuracy and 70.4% macro F1-score, statistically comparable to centralized training (DeLong p > 0.05) while significantly outperforming local models. An ablation study on client-adaptive threshold calibration further improves minority-class detection by 4.2% without increasing false positive rates. These findings confirm FL as a viable, privacy-preserving infrastructure for cross-organizational insider threat detection.`,
 };
@@ -49,7 +48,6 @@ export const BASELINE_RESULTS = [
   { model: "Autoencoder", params: 1.12, accuracy: 71.3, f1: 65.8, precision: 68.4, recall: 63.5, aucRoc: 0.842, epochs: 9, selected: false },
 ];
 
-// Two-client federation results
 export const TWO_CLIENT_RESULTS = {
   "Client 1 + Client 2": {
     label: "Client 1 (Financial) + Client 2 (Healthcare)",
@@ -197,5 +195,5 @@ All authors have read and approved the manuscript, which has not been submitted 
 We look forward to your consideration.
 
 Sincerely,
-Dr. Khalid M. Al-Rashidi (corresponding author)
+Caleb Gunalan (corresponding author)
 On behalf of all co-authors`;

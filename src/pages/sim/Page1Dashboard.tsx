@@ -18,13 +18,18 @@ export default function Page1Dashboard() {
             <span key={i} className="flex items-center gap-1">
               <Users className="h-3.5 w-3.5" />
               <span className="font-medium text-foreground">{a.name}</span>
+              {a.corresponding && <span className="text-xs text-primary">*</span>}
+              {a.orcid && (
+                <a href={`https://orcid.org/${a.orcid}`} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline font-mono">
+                  ({a.orcid})
+                </a>
+              )}
             </span>
           ))}
         </div>
         <div className="text-xs text-muted-foreground space-y-0.5">
-          {PAPER_META.authors.map((a, i) => (
-            <p key={i}><span className="font-mono text-muted-foreground/70">[{i + 1}]</span> {a.affiliation}</p>
-          ))}
+          <p><span className="font-mono text-muted-foreground/70">[1]</span> {PAPER_META.authors[0].affiliation}</p>
+          <p className="mt-1 text-xs">* Correspondence: calebgunalan2005@gmail.com; deepa.kumar@klu.ac.in</p>
         </div>
       </div>
 
