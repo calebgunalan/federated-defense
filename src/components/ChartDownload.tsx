@@ -10,29 +10,42 @@ export function useChartDownload(filename: string): [RefObject<HTMLDivElement>, 
     if (!ref.current) return;
     try {
       const svg = ref.current.querySelector("svg");
-      if (!svg) { toast.error("No chart found"); return; }
-      const svgData = new XMLSerializer().serializeToString(svg);
-      const canvas = document.createElement("canvas");
-      const svgRect = svg.getBoundingClientRect();
-      const scale = 3;
-      canvas.width = svgRect.width * scale;
-      canvas.height = svgRect.height * scale;
-      const ctx = canvas.getContext("2d")!;
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const img = new Image();
-      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        URL.revokeObjectURL(url);
+      if (svg) {
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement("canvas");
+        const svgRect = svg.getBoundingClientRect();
+        const scale = 3;
+        canvas.width = svgRect.width * scale;
+        canvas.height = svgRect.height * scale;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const img = new Image();
+        const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          const link = document.createElement("a");
+          link.download = `${filename}.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          toast.success(`Downloaded ${filename}.png`);
+        };
+        img.src = url;
+      } else {
+        const html2canvas = (await import("html2canvas")).default;
+        const canvas = await html2canvas(ref.current, {
+          scale: 3,
+          backgroundColor: "#ffffff",
+          useCORS: true,
+        });
         const link = document.createElement("a");
         link.download = `${filename}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
         toast.success(`Downloaded ${filename}.png`);
-      };
-      img.src = url;
+      }
     } catch {
       toast.error("Download failed");
     }

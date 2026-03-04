@@ -6,40 +6,72 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { useChartDownload, DownloadButton } from "@/components/ChartDownload";
 
 function JSDHeatmap() {
-  const clients = ["Client 1", "Client 2", "Client 3"];
+  const clients = [
+    { id: "Client 1", label: "C1 (Financial)" },
+    { id: "Client 2", label: "C2 (Healthcare)" },
+    { id: "Client 3", label: "C3 (Manufacturing)" },
+  ];
+
   const getJSD = (a: string, b: string) => {
-    if (a === b) return 1.0;
+    if (a === b) return null;
     const pair = JSD_VALUES.find(
-      (v) => (v.clientA.includes(a.split(" ")[1]) && v.clientB.includes(b.split(" ")[1])) ||
-             (v.clientA.includes(b.split(" ")[1]) && v.clientB.includes(a.split(" ")[1]))
+      (v) =>
+        (v.clientA.includes(a.split(" ")[1]) && v.clientB.includes(b.split(" ")[1])) ||
+        (v.clientA.includes(b.split(" ")[1]) && v.clientB.includes(a.split(" ")[1]))
     );
     return pair?.jsd ?? 0;
   };
-  const getColor = (v: number) => {
-    if (v >= 1) return "bg-primary/10";
-    if (v >= 0.3) return "bg-destructive/30";
-    if (v >= 0.2) return "bg-amber-500/30";
-    return "bg-accent/30";
+
+  const getColor = (v: number | null) => {
+    if (v === null) return "bg-muted/40";
+    if (v >= 0.3) return "bg-destructive/25 border-destructive/40";
+    if (v >= 0.2) return "bg-amber-500/25 border-amber-500/40";
+    return "bg-emerald-500/20 border-emerald-500/40";
   };
 
   return (
-    <div className="space-y-2">
-      <div className="grid grid-cols-4 gap-1 max-w-md">
-        <div />
-        {clients.map((c) => <div key={c} className="text-xs font-mono text-center text-muted-foreground p-2">{c}</div>)}
+    <div className="inline-block">
+      <div className="grid grid-cols-4 gap-1">
+        <div className="w-28" />
+        {clients.map((c) => (
+          <div key={c.id} className="text-[11px] font-semibold text-center text-muted-foreground p-2 w-28">
+            {c.label}
+          </div>
+        ))}
         {clients.map((row) => (
           <>
-            <div key={`label-${row}`} className="text-xs font-mono text-muted-foreground p-2 flex items-center">{row}</div>
+            <div key={`label-${row.id}`} className="text-[11px] font-semibold text-muted-foreground p-2 flex items-center justify-end w-28">
+              {clients.find((c) => c.id === row.id)?.label}
+            </div>
             {clients.map((col) => {
-              const v = getJSD(row, col);
+              const v = getJSD(row.id, col.id);
               return (
-                <div key={`${row}-${col}`} className={`${getColor(v)} rounded-md flex items-center justify-center p-3`}>
-                  <span className="text-sm font-mono font-medium">{v === 1 ? "—" : v.toFixed(3)}</span>
+                <div
+                  key={`${row.id}-${col.id}`}
+                  className={`${getColor(v)} border rounded-md flex items-center justify-center p-3 w-28 h-14 transition-colors`}
+                >
+                  <span className="text-sm font-mono font-semibold">
+                    {v === null ? "—" : v.toFixed(3)}
+                  </span>
                 </div>
               );
             })}
           </>
         ))}
+      </div>
+      <div className="flex items-center gap-3 mt-3 text-[10px] text-muted-foreground">
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 rounded bg-emerald-500/20 border border-emerald-500/40" />
+          Low ({"<"}0.2)
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 rounded bg-amber-500/25 border border-amber-500/40" />
+          Moderate (0.2–0.3)
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-3 h-3 rounded bg-destructive/25 border border-destructive/40" />
+          High ({">"}0.3)
+        </div>
       </div>
     </div>
   );
@@ -47,6 +79,7 @@ function JSDHeatmap() {
 
 export default function Page2Dataset() {
   const [featureRef, downloadFeature] = useChartDownload("feature_distribution");
+  const [jsdRef, downloadJsd] = useChartDownload("jsd_heatmap");
 
   const featureChartData = FEATURE_DISTRIBUTION.map((f) => ({
     name: f.feature.length > 12 ? f.feature.substring(0, 12) + "…" : f.feature,
@@ -99,9 +132,14 @@ export default function Page2Dataset() {
       </Card>
 
       <Card>
-        <CardHeader><CardTitle className="text-base">Jensen–Shannon Divergence Heatmap</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Jensen–Shannon Divergence Heatmap</CardTitle>
+          <DownloadButton onClick={downloadJsd} />
+        </CardHeader>
         <CardContent className="space-y-4">
-          <JSDHeatmap />
+          <div ref={jsdRef} className="p-4 inline-block">
+            <JSDHeatmap />
+          </div>
           <p className="text-sm text-muted-foreground leading-relaxed">
             The pairwise Jensen–Shannon Divergence (JSD) values quantify the degree of distributional dissimilarity across client data partitions. The highest divergence is observed between Client 1 (Financial) and Client 3 (Manufacturing) at JSD = 0.312, reflecting fundamentally different behavioral baselines — financial firms exhibit high after-hours and USB activity, while manufacturing environments are characterized by shift-based login patterns. The moderate divergence between Client 1 and Client 2 (JSD = 0.218) and the relatively lower divergence between Client 2 and Client 3 (JSD = 0.174) indicate that healthcare and manufacturing organizations share some behavioral overlap in file access patterns, though they diverge significantly in external communication profiles. These heterogeneity levels confirm genuine non-IID conditions that challenge standard federated aggregation methods.
           </p>

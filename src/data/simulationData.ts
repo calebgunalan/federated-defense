@@ -180,6 +180,20 @@ export const SUGGESTED_REVIEWERS = [
   { name: "Prof. Elisa Bertino", affiliation: "Purdue University, West Lafayette, IN, USA", papers: "A Data-Centric Approach to Insider Attack Detection (2014); Security Analytics Frameworks" },
 ];
 
+export const MU_SENSITIVITY = [
+  { mu: 0.001, accuracy: 73.2, f1: 68.1, precision: 70.4, recall: 66.2 },
+  { mu: 0.01, accuracy: 75.8, f1: 70.4, precision: 72.9, recall: 68.5 },
+  { mu: 0.1, accuracy: 74.9, f1: 69.8, precision: 72.1, recall: 67.9 },
+  { mu: 1.0, accuracy: 72.4, f1: 67.2, precision: 69.8, recall: 65.1 },
+];
+
+export const PERFORMANCE_GAINS = [
+  { scenario: "C1+C2", localAcc: 70.6, fedproxAcc: 77.5, gain: 6.9 },
+  { scenario: "C1+C3", localAcc: 71.2, fedproxAcc: 77.6, gain: 6.4 },
+  { scenario: "C2+C3", localAcc: 69.5, fedproxAcc: 76.4, gain: 6.9 },
+  { scenario: "3-Client", localAcc: 70.4, fedproxAcc: 75.8, gain: 5.4 },
+];
+
 export const COVER_LETTER = `Dear Editor,
 
 We are pleased to submit our manuscript entitled "A Comparative Analysis of Federated Learning for Cross-Organizational Insider Threat Detection" for consideration in the MDPI AI Journal.

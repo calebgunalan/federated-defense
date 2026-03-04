@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { ABLATION_RESULTS, CONFUSION_MATRICES } from "@/data/simulationData";
+import { useChartDownload, DownloadButton } from "@/components/ChartDownload";
 
 function ConfusionMatrix({ title, data }: { title: string; data: { tp: number; fp: number; fn: number; tn: number } }) {
-  const total = data.tp + data.fp + data.fn + data.tn;
   const tpRate = ((data.tp / (data.tp + data.fn)) * 100).toFixed(1);
   const tnRate = ((data.tn / (data.tn + data.fp)) * 100).toFixed(1);
 
@@ -15,11 +15,9 @@ function ConfusionMatrix({ title, data }: { title: string; data: { tp: number; f
         <div />
         <div className="text-center font-mono text-muted-foreground p-1">Pred N</div>
         <div className="text-center font-mono text-muted-foreground p-1">Pred M</div>
-
         <div className="text-right font-mono text-muted-foreground p-1 flex items-center justify-end">Act N</div>
         <div className="bg-accent/20 rounded p-2 text-center font-mono font-bold">{data.tn}</div>
         <div className="bg-destructive/15 rounded p-2 text-center font-mono">{data.fp}</div>
-
         <div className="text-right font-mono text-muted-foreground p-1 flex items-center justify-end">Act M</div>
         <div className="bg-destructive/15 rounded p-2 text-center font-mono">{data.fn}</div>
         <div className="bg-primary/20 rounded p-2 text-center font-mono font-bold">{data.tp}</div>
@@ -32,6 +30,7 @@ function ConfusionMatrix({ title, data }: { title: string; data: { tp: number; f
 export default function Page6Ablation() {
   const strategies = ["global", "perClient", "federated"] as const;
   const strategyLabels = ["Global Fixed (τ=0.5)", "Per-Client Local", "Federated Calibration"];
+  const [cmRef, downloadCm] = useChartDownload("confusion_matrices");
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -41,7 +40,6 @@ export default function Page6Ablation() {
         <p className="text-muted-foreground mt-1">Client-adaptive threshold calibration with MLP + FedProx.</p>
       </div>
 
-      {/* Results Table */}
       <Card>
         <CardHeader><CardTitle className="text-base">Table 7 — Threshold Calibration Results</CardTitle></CardHeader>
         <CardContent className="overflow-x-auto">
@@ -75,10 +73,12 @@ export default function Page6Ablation() {
         </CardContent>
       </Card>
 
-      {/* Confusion Matrices */}
       <Card>
-        <CardHeader><CardTitle className="text-base">Confusion Matrices by Threshold Strategy</CardTitle></CardHeader>
-        <CardContent className="space-y-8">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Confusion Matrices by Threshold Strategy</CardTitle>
+          <DownloadButton onClick={downloadCm} />
+        </CardHeader>
+        <CardContent className="space-y-8" ref={cmRef}>
           {strategies.map((strategy, si) => (
             <div key={strategy} className="space-y-3">
               <h3 className="text-sm font-semibold text-center">{strategyLabels[si]}</h3>
@@ -92,7 +92,6 @@ export default function Page6Ablation() {
         </CardContent>
       </Card>
 
-      {/* Interpretation */}
       <Card>
         <CardHeader><CardTitle className="text-base">Interpretation</CardTitle></CardHeader>
         <CardContent>
