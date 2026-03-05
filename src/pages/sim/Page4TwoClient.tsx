@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TWO_CLIENT_RESULTS } from "@/data/simulationData";
+import { useChartDownload, DownloadButton } from "@/components/ChartDownload";
 
 const INTERPRETATIONS: Record<string, string> = {
   "Client 1 + Client 2": "In the Financial–Healthcare federation, FedProx consistently outperformed FedAvg across all three architectures, with LSTM achieving the highest gains (+2.4% accuracy over FedAvg). The moderate JSD (0.218) between these clients allowed effective knowledge transfer, particularly improving Client 2's recall on malicious insider detection by leveraging Client 1's richer privileged-user behavioral patterns.",
@@ -9,7 +10,11 @@ const INTERPRETATIONS: Record<string, string> = {
   "Client 2 + Client 3": "The Healthcare–Manufacturing federation, with the lowest heterogeneity (JSD = 0.174), showed the most consistent improvements across all paradigms. Even FedAvg performed well in this setting, achieving within 1.5% of FedProx on average. This supports the theoretical expectation that FedAvg performs comparably to FedProx under mild non-IID conditions, while FedProx maintains an edge through its regularization mechanism.",
 };
 
+const pairingKeys = Object.keys(INTERPRETATIONS);
+
 export default function Page4TwoClient() {
+  const downloadHooks = pairingKeys.map((key, i) => useChartDownload(`two_client_table_${i + 1}`));
+
   return (
     <div className="max-w-5xl mx-auto space-y-8">
       <div>
@@ -18,52 +23,58 @@ export default function Page4TwoClient() {
         <p className="text-muted-foreground mt-1">Pairwise federated experiments across all three client combinations.</p>
       </div>
 
-      {Object.entries(TWO_CLIENT_RESULTS).map(([key, data]) => (
-        <Card key={key}>
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              {data.label}
-              <Badge variant="secondary" className="text-xs font-mono">JSD = {data.jsd}</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Model</TableHead>
-                  <TableHead>Experiment</TableHead>
-                  <TableHead className="text-right">Acc A</TableHead>
-                  <TableHead className="text-right">Acc B</TableHead>
-                  <TableHead className="text-right">F1 A</TableHead>
-                  <TableHead className="text-right">F1 B</TableHead>
-                  <TableHead className="text-right">Precision</TableHead>
-                  <TableHead className="text-right">Recall</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.rows.map((r, i) => {
-                  const isBest = r.experiment === "FedProx";
-                  return (
-                    <TableRow key={i} className={isBest ? "bg-primary/5" : ""}>
-                      <TableCell className="font-mono text-xs">{i % 4 === 0 ? r.model : ""}</TableCell>
-                      <TableCell>
-                        <Badge variant={isBest ? "default" : "outline"} className="text-xs">{r.experiment}</Badge>
-                      </TableCell>
-                      <TableCell className={`text-right font-mono text-xs ${isBest ? "font-bold" : ""}`}>{r.accA}</TableCell>
-                      <TableCell className={`text-right font-mono text-xs ${isBest ? "font-bold" : ""}`}>{r.accB}</TableCell>
-                      <TableCell className="text-right font-mono text-xs">{r.f1A}</TableCell>
-                      <TableCell className="text-right font-mono text-xs">{r.f1B}</TableCell>
-                      <TableCell className="text-right font-mono text-xs">{r.precision}</TableCell>
-                      <TableCell className="text-right font-mono text-xs">{r.recall}</TableCell>
+      {Object.entries(TWO_CLIENT_RESULTS).map(([key, data], idx) => {
+        const [ref, download] = downloadHooks[idx];
+        return (
+          <Card key={key}>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-base flex items-center gap-2">
+                {data.label}
+                <Badge variant="secondary" className="text-xs font-mono">JSD = {data.jsd}</Badge>
+              </CardTitle>
+              <DownloadButton onClick={download} />
+            </CardHeader>
+            <CardContent className="space-y-4 overflow-x-auto">
+              <div ref={ref}>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Model</TableHead>
+                      <TableHead>Experiment</TableHead>
+                      <TableHead className="text-right">Acc A</TableHead>
+                      <TableHead className="text-right">Acc B</TableHead>
+                      <TableHead className="text-right">F1 A</TableHead>
+                      <TableHead className="text-right">F1 B</TableHead>
+                      <TableHead className="text-right">Precision</TableHead>
+                      <TableHead className="text-right">Recall</TableHead>
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-            <p className="text-sm text-muted-foreground leading-relaxed">{INTERPRETATIONS[key]}</p>
-          </CardContent>
-        </Card>
-      ))}
+                  </TableHeader>
+                  <TableBody>
+                    {data.rows.map((r, i) => {
+                      const isBest = r.experiment === "FedProx";
+                      return (
+                        <TableRow key={i} className={isBest ? "bg-primary/5" : ""}>
+                          <TableCell className="font-mono text-xs">{i % 4 === 0 ? r.model : ""}</TableCell>
+                          <TableCell>
+                            <Badge variant={isBest ? "default" : "outline"} className="text-xs">{r.experiment}</Badge>
+                          </TableCell>
+                          <TableCell className={`text-right font-mono text-xs ${isBest ? "font-bold" : ""}`}>{r.accA}</TableCell>
+                          <TableCell className={`text-right font-mono text-xs ${isBest ? "font-bold" : ""}`}>{r.accB}</TableCell>
+                          <TableCell className="text-right font-mono text-xs">{r.f1A}</TableCell>
+                          <TableCell className="text-right font-mono text-xs">{r.f1B}</TableCell>
+                          <TableCell className="text-right font-mono text-xs">{r.precision}</TableCell>
+                          <TableCell className="text-right font-mono text-xs">{r.recall}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{INTERPRETATIONS[key]}</p>
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 }
