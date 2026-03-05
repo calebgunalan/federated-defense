@@ -424,7 +424,33 @@ MLP & FedProx & 74.8 & 70.1 & 73.2 & 72.7 & 70.5 & 65.4 & 69.1 & 68.3 \\
 \end{tabular}
 \end{table}
 
-Across all three-client experiments, FedAvg shows diminished returns compared to its two-client performance, dropping by an average of 1.8\% in accuracy relative to the two-client averages. This degradation stems from the increased heterogeneity when three diverse organizational profiles contribute conflicting gradient signals during aggregation. FedProx, by contrast, maintains stable performance through its proximal regularization, which prevents any single client's local updates from dominating the global model. Figure~\ref{fig:roc} presents the ROC curves for LSTM under the three training paradigms across all clients.
+Across all three-client experiments, FedAvg shows diminished returns compared to its two-client performance, dropping by an average of 1.8\% in accuracy relative to the two-client averages. This degradation stems from the increased heterogeneity when three diverse organizational profiles contribute conflicting gradient signals during aggregation. FedProx, by contrast, maintains stable performance through its proximal regularization, which prevents any single client's local updates from dominating the global model. Figure~\ref{fig:gain} visualizes the accuracy improvement from Local to FedProx training across all architectures and federation settings, and Figure~\ref{fig:roc} presents the ROC curves for LSTM under the three training paradigms across all clients.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.85\textwidth, height=6cm,
+    ybar, bar width=6pt,
+    xlabel={Federation Scenario},
+    ylabel={Accuracy Gain: Local $\rightarrow$ FedProx (\%)},
+    symbolic x coords={C1+C2, C1+C3, C2+C3, C1+C2+C3},
+    xtick=data,
+    legend style={at={(0.5,1.08)}, anchor=south, legend columns=3, font=\footnotesize},
+    ymin=0, ymax=9,
+    enlarge x limits=0.15,
+    nodes near coords, nodes near coords style={font=\tiny, rotate=0},
+    grid=major, grid style={gray!15},
+]
+\addplot coordinates {(C1+C2,5.4) (C1+C3,6.4) (C2+C3,5.0) (C1+C2+C3,5.4)};
+\addplot coordinates {(C1+C2,4.0) (C1+C3,4.3) (C2+C3,3.9) (C1+C2+C3,4.0)};
+\addplot coordinates {(C1+C2,4.7) (C1+C3,4.5) (C2+C3,4.3) (C1+C2+C3,4.3)};
+\legend{LSTM, MLP, 1D-CNN}
+\end{axis}
+\end{tikzpicture}
+\caption{Performance gain analysis: accuracy improvement from Local-only to FedProx training across all federation scenarios and architectures. LSTM consistently achieves the largest gains, particularly in the high-heterogeneity C1+C3 pairing (JSD = 0.312). The gains are sustained in the three-client federation despite increased aggregation complexity.}
+\label{fig:gain}
+\end{figure}
 
 \begin{figure}[H]
 \centering
