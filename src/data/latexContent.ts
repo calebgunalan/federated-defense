@@ -369,24 +369,25 @@ The Financial--Manufacturing pairing exhibited the strongest heterogeneity (JSD 
 \caption{Two-Client Federation: Client~2 (Healthcare) + Client~3 (Manufacturing). JSD = 0.174.}
 \label{tab:2c3}
 \centering
-\begin{tabular}{llcccccc}
+\footnotesize
+\begin{tabular}{llcccccccc}
 \toprule
-\textbf{Model} & \textbf{Experiment} & \textbf{Acc C2} & \textbf{Acc C3} & \textbf{F1 C2} & \textbf{F1 C3} & \textbf{Prec} & \textbf{Recall} \\
+\textbf{Model} & \textbf{Exp.} & \textbf{Acc C2} & \textbf{Acc C3} & \textbf{F1 C2} & \textbf{F1 C3} & \textbf{Prec C2} & \textbf{Prec C3} & \textbf{Rec C2} & \textbf{Rec C3} \\
 \midrule
-LSTM & Local & 68.9 $\pm$ 4.8 & 70.1 $\pm$ 4.6 & 63.2 & 65.8 & 66.4 & 64.1 \\
-LSTM & Centralized & 71.2 $\pm$ 4.4 & 73.1 $\pm$ 4.1 & 66.1 & 68.5 & 69.2 & 66.9 \\
-LSTM & FedAvg & 74.1 $\pm$ 3.9 & 75.4 $\pm$ 3.7 & 69.8 & 71.2 & 72.4 & 70.1 \\
-LSTM & FedProx & \textbf{75.6 $\pm$ 3.6} & \textbf{77.2 $\pm$ 3.4} & \textbf{71.4} & \textbf{73.1} & 73.8 & 71.8 \\
+LSTM & Local & 68.9$\pm$4.8 & 70.1$\pm$4.6 & 63.2$\pm$4.5 & 65.8$\pm$4.3 & 66.8$\pm$4.3 & 68.1$\pm$4.1 & 60.8$\pm$4.7 & 64.0$\pm$4.5 \\
+LSTM & Cent. & 71.2$\pm$4.4 & 73.1$\pm$4.1 & 66.1$\pm$4.1 & 68.5$\pm$3.8 & 69.5$\pm$3.9 & 70.8$\pm$3.6 & 63.5$\pm$4.3 & 66.6$\pm$4.0 \\
+LSTM & FedAvg & 74.1$\pm$3.9 & 75.4$\pm$3.7 & 69.8$\pm$3.6 & 71.2$\pm$3.4 & 72.8$\pm$3.4 & 73.5$\pm$3.2 & 67.4$\pm$3.8 & 69.2$\pm$3.6 \\
+LSTM & FedProx & \textbf{75.6$\pm$3.6} & \textbf{77.2$\pm$3.4} & \textbf{71.4$\pm$3.3} & \textbf{73.1$\pm$3.1} & \textbf{74.2$\pm$3.1} & \textbf{75.4$\pm$2.9} & \textbf{69.1$\pm$3.5} & \textbf{71.2$\pm$3.3} \\
 \midrule
-MLP & Local & 66.1 $\pm$ 5.1 & 67.8 $\pm$ 4.9 & 60.8 & 63.1 & 63.8 & 61.5 \\
-MLP & Centralized & 68.5 $\pm$ 4.7 & 70.2 $\pm$ 4.5 & 63.5 & 65.8 & 66.5 & 64.2 \\
-MLP & FedAvg & 70.2 $\pm$ 4.3 & 71.8 $\pm$ 4.1 & 65.4 & 67.5 & 68.2 & 66.1 \\
-MLP & FedProx & \textbf{72.1 $\pm$ 4.0} & \textbf{73.5 $\pm$ 3.8} & \textbf{67.8} & \textbf{69.4} & 70.4 & 68.2 \\
+MLP & Local & 66.1$\pm$5.1 & 67.8$\pm$4.9 & 60.8$\pm$4.8 & 63.1$\pm$4.6 & 64.1$\pm$4.6 & 65.4$\pm$4.4 & 58.2$\pm$5.0 & 61.2$\pm$4.8 \\
+MLP & Cent. & 68.5$\pm$4.7 & 70.2$\pm$4.5 & 63.5$\pm$4.4 & 65.8$\pm$4.2 & 66.8$\pm$4.2 & 68.0$\pm$4.0 & 60.8$\pm$4.6 & 63.9$\pm$4.4 \\
+MLP & FedAvg & 70.2$\pm$4.3 & 71.8$\pm$4.1 & 65.4$\pm$4.0 & 67.5$\pm$3.8 & 68.5$\pm$3.8 & 69.8$\pm$3.6 & 62.8$\pm$4.2 & 65.6$\pm$4.0 \\
+MLP & FedProx & \textbf{72.1$\pm$4.0} & \textbf{73.5$\pm$3.8} & \textbf{67.8$\pm$3.7} & \textbf{69.4$\pm$3.5} & \textbf{70.8$\pm$3.5} & \textbf{71.5$\pm$3.3} & \textbf{65.4$\pm$3.9} & \textbf{67.6$\pm$3.7} \\
 \midrule
-1D-CNN & Local & 67.5 $\pm$ 4.9 & 69.2 $\pm$ 4.7 & 62.1 & 64.5 & 65.1 & 62.9 \\
-1D-CNN & Centralized & 70.1 $\pm$ 4.4 & 71.8 $\pm$ 4.2 & 65.3 & 67.2 & 68.1 & 65.8 \\
-1D-CNN & FedAvg & 72.4 $\pm$ 4.0 & 73.5 $\pm$ 3.8 & 67.8 & 69.1 & 70.2 & 68.1 \\
-1D-CNN & FedProx & \textbf{74.1 $\pm$ 3.7} & \textbf{75.2 $\pm$ 3.5} & \textbf{69.8} & \textbf{71.1} & 72.1 & 70.0 \\
+1D-CNN & Local & 67.5$\pm$4.9 & 69.2$\pm$4.7 & 62.1$\pm$4.6 & 64.5$\pm$4.4 & 65.4$\pm$4.4 & 66.8$\pm$4.2 & 59.5$\pm$4.8 & 62.6$\pm$4.6 \\
+1D-CNN & Cent. & 70.1$\pm$4.4 & 71.8$\pm$4.2 & 65.3$\pm$4.1 & 67.2$\pm$3.9 & 68.4$\pm$3.9 & 69.5$\pm$3.7 & 62.8$\pm$4.3 & 65.2$\pm$4.1 \\
+1D-CNN & FedAvg & 72.4$\pm$4.0 & 73.5$\pm$3.8 & 67.8$\pm$3.7 & 69.1$\pm$3.5 & 70.5$\pm$3.5 & 71.4$\pm$3.3 & 65.5$\pm$3.9 & 67.1$\pm$3.7 \\
+1D-CNN & FedProx & \textbf{74.1$\pm$3.7} & \textbf{75.2$\pm$3.5} & \textbf{69.8$\pm$3.4} & \textbf{71.1$\pm$3.2} & \textbf{72.4$\pm$3.2} & \textbf{73.2$\pm$3.0} & \textbf{67.6$\pm$3.6} & \textbf{69.2$\pm$3.4} \\
 \bottomrule
 \end{tabular}
 \end{table}
