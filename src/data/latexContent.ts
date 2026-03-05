@@ -1,7 +1,8 @@
 // Full expanded LaTeX manuscript content for MDPI AI journal submission
 // Approximately 25 pages when compiled with MDPI template
 
-const raw = (strings: TemplateStringsArray) => strings.raw[0];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const raw = (strings: any) => strings.raw[0];
 export const LATEX_CODE = raw`\documentclass[ai,article]{Definitions/mdpi}
 
 \usepackage{amsmath,amssymb,amsfonts}
