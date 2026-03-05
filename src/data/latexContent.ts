@@ -2,7 +2,7 @@
 // Approximately 25 pages when compiled with MDPI template
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const raw = (strings: any) => strings.raw[0];
+const raw = (strings: any, ...values: any[]) => strings.raw.reduce((acc: string, str: string, i: number) => acc + (i > 0 ? String(values[i - 1]) : '') + str, '');
 export const LATEX_CODE = raw`\documentclass[ai,article]{Definitions/mdpi}
 
 \usepackage{amsmath,amssymb,amsfonts}
