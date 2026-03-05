@@ -1,7 +1,7 @@
 // Full expanded LaTeX manuscript content for MDPI AI journal submission
 // Approximately 25 pages when compiled with MDPI template
 
-export const LATEX_CODE = `\\documentclass[ai,article]{Definitions/mdpi}
+export const LATEX_CODE = String.raw`\documentclass[ai,article]{Definitions/mdpi}
 
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs}
