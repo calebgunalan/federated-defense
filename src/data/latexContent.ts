@@ -477,7 +477,53 @@ Across all three-client experiments, FedAvg shows diminished returns compared to
 \label{fig:roc}
 \end{figure}
 
-\subsection{Ablation Study: Client-Adaptive Threshold Calibration}
+\subsection{Proximal Term Sensitivity Analysis}
+
+The proximal regularization hyperparameter $\mu$ in FedProx controls the trade-off between local model expressiveness and global model consistency. To systematically evaluate its impact, we conducted a sensitivity analysis using LSTM in the three-client federation across $\mu \in \{0.001, 0.01, 0.1, 1.0\}$. Table~\ref{tab:mu} presents the results.
+
+\begin{table}[H]
+\caption{Proximal term ($\mu$) sensitivity analysis for LSTM + FedProx in the three-client federation. Bold indicates the optimal configuration.}
+\label{tab:mu}
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{$\mu$} & \textbf{Acc C1} & \textbf{Acc C2} & \textbf{Acc C3} & \textbf{Avg Acc (\%)} & \textbf{Avg F1 (\%)} & \textbf{AUC-ROC} \\
+\midrule
+0.001 & 75.1 & 69.8 & 74.6 & 73.2 & 67.8 & 0.872 \\
+\textbf{0.01} & \textbf{78.4} & \textbf{72.3} & \textbf{76.7} & \textbf{75.8} & \textbf{70.4} & \textbf{0.901} \\
+0.1 & 77.2 & 71.5 & 76.1 & 74.9 & 69.6 & 0.891 \\
+1.0 & 74.8 & 70.2 & 72.1 & 72.4 & 66.9 & 0.862 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The results reveal a clear inverted-U relationship between $\mu$ and performance. At $\mu = 0.001$, insufficient regularization allows client drift, where local models over-specialize to their own behavioral distributions and contribute conflicting gradients during aggregation, resulting in 73.2\% average accuracy. At $\mu = 1.0$, excessive regularization suppresses beneficial local adaptation, effectively forcing all clients toward a uniform model that cannot accommodate the legitimate behavioral differences across organizational types, yielding 72.4\% average accuracy. The optimal value $\mu = 0.01$ strikes the best balance, achieving 75.8\% average accuracy and 70.4\% macro F1-score. The intermediate value $\mu = 0.1$ produces competitive results (74.9\% accuracy), suggesting that the method is relatively robust within the range $[0.01, 0.1]$ but degrades at the extremes.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.75\textwidth, height=6cm,
+    xlabel={Proximal Term $\mu$ (log scale)},
+    ylabel={Performance (\%)},
+    xmode=log,
+    xtick={0.001, 0.01, 0.1, 1.0},
+    xticklabels={0.001, 0.01, 0.1, 1.0},
+    legend style={at={(0.98,0.02)}, anchor=south east, font=\footnotesize},
+    grid=major, grid style={gray!20},
+    ymin=64, ymax=78,
+    mark size=3pt,
+]
+\addplot[blue, very thick, mark=*] coordinates {(0.001,73.2)(0.01,75.8)(0.1,74.9)(1.0,72.4)};
+\addplot[red, thick, mark=square*, dashed] coordinates {(0.001,67.8)(0.01,70.4)(0.1,69.6)(1.0,66.9)};
+\legend{Avg Accuracy, Avg F1-Score}
+\end{axis}
+\end{tikzpicture}
+\caption{Proximal term ($\mu$) sensitivity analysis for LSTM + FedProx in the three-client federation. Performance follows an inverted-U pattern, with $\mu = 0.01$ achieving the optimal trade-off between preventing client drift and preserving local model expressiveness.}
+\label{fig:mu}
+\end{figure}
+
+\subsection{Client-Adaptive Threshold Calibration}
 
 The comparative analysis reveals that inter-client heterogeneity in the three-client federation poses a significant challenge, limiting the performance gains of standard federated learning algorithms. To address this, we investigate whether adapting each client's local decision threshold can better accommodate its specific data distribution. Based on LSTM's superior average performance in the three-client scenario (Table~\ref{tab:3c}), we selected the LSTM architecture combined with FedProx as the base configuration for this investigation.
 
