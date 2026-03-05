@@ -169,7 +169,48 @@ To visualize feature-level differences across clients (Figure~\ref{fig:features}
 
 \subsection{Feature Engineering}
 
-For each user, within each time window (daily), we compute behavioral aggregates forming a feature vector of dimension $d = 24$. The feature set encompasses six primary categories: (1)~\textit{Authentication features} including total login event counts, after-hours login ratios, failed login attempt counts, and session duration statistics; (2)~\textit{File access features} including unique file access counts, sensitive file access ratios, and file download-to-upload ratios; (3)~\textit{Communication features} including external-to-internal email ratios, email volume anomaly scores, and attachment size statistics; (4)~\textit{Device features} including USB insertion frequencies, removable media write volumes, and device diversity indices; (5)~\textit{Network features} including HTTP request volumes, flagged domain access counts, and bandwidth consumption anomaly scores; and (6)~\textit{Derived temporal features} including behavioral volatility indices computed as rolling standard deviations over 7-day windows, day-of-week activity entropy, and inter-session gap statistics. This feature engineering pipeline ensures that the models receive a standardized input representation regardless of the raw log format differences between the CERT and LANL datasets. All features were z-score normalized per client to ensure consistent scaling across the heterogeneous data sources.
+For each user, within each time window (daily), we compute behavioral aggregates forming a feature vector of dimension $d = 24$. The feature set encompasses six primary categories, summarized in Table~\ref{tab:features}: (1)~\textit{Authentication features} including total login event counts, after-hours login ratios, failed login attempt counts, and session duration statistics; (2)~\textit{File access features} including unique file access counts, sensitive file access ratios, and file download-to-upload ratios; (3)~\textit{Communication features} including external-to-internal email ratios, email volume anomaly scores, and attachment size statistics; (4)~\textit{Device features} including USB insertion frequencies, removable media write volumes, and device diversity indices; (5)~\textit{Network features} including HTTP request volumes, flagged domain access counts, and bandwidth consumption anomaly scores; and (6)~\textit{Derived temporal features} including behavioral volatility indices computed as rolling standard deviations over 7-day windows, day-of-week activity entropy, and inter-session gap statistics. This feature engineering pipeline ensures that the models receive a standardized input representation regardless of the raw log format differences between the CERT and LANL datasets. All features were z-score normalized per client to ensure consistent scaling across the heterogeneous data sources.
+
+\begin{table}[H]
+\caption{Summary of the 24 engineered behavioral features organized by category. Each feature is computed as a daily aggregate per user.}
+\label{tab:features}
+\centering
+\begin{tabular}{llp{7cm}}
+\toprule
+\textbf{Category} & \textbf{Feature} & \textbf{Description} \\
+\midrule
+\multirow{4}{*}{Authentication} & Login count & Total login events per day \\
+ & After-hours ratio & Fraction of logins outside 08:00--18:00 \\
+ & Failed login count & Number of unsuccessful authentication attempts \\
+ & Session duration (mean) & Average session length in minutes \\
+\midrule
+\multirow{4}{*}{File Access} & Unique file count & Distinct files accessed per day \\
+ & Sensitive file ratio & Fraction of accesses to classified/restricted files \\
+ & Download-to-upload ratio & Ratio of file downloads to uploads \\
+ & File access entropy & Shannon entropy of file access distribution \\
+\midrule
+\multirow{4}{*}{Communication} & External email ratio & Fraction of emails sent to external domains \\
+ & Email volume anomaly & Z-score of daily email count vs.\ rolling mean \\
+ & Attachment size (mean) & Average attachment size in KB \\
+ & Recipient diversity & Unique recipients per day \\
+\midrule
+\multirow{3}{*}{Device} & USB insertion freq. & Number of USB device insertions per day \\
+ & Removable write vol. & Data volume written to removable media (MB) \\
+ & Device diversity index & Count of distinct device types used \\
+\midrule
+\multirow{4}{*}{Network} & HTTP request volume & Total HTTP requests per day \\
+ & Flagged domain count & Accesses to domains on threat intelligence lists \\
+ & Bandwidth anomaly & Z-score of bandwidth vs.\ rolling mean \\
+ & DNS query entropy & Shannon entropy of DNS query distribution \\
+\midrule
+\multirow{5}{*}{Temporal} & Behavioral volatility & 7-day rolling std.\ dev.\ of feature vector norm \\
+ & Day-of-week entropy & Entropy of activity distribution across weekdays \\
+ & Inter-session gap (mean) & Average time between consecutive sessions \\
+ & Weekend activity ratio & Fraction of activity occurring on weekends \\
+ & Activity trend slope & Linear regression slope of daily activity over 14 days \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Models}
 
