@@ -305,30 +305,31 @@ Based on the macro-averaged metrics in Table~\ref{tab:baseline}, LSTM demonstrat
 
 \subsection{Two-Client Federation Results}
 
-Tables~\ref{tab:2c1}--\ref{tab:2c3} present the two-client federation results across all three pairings. FedProx consistently outperformed FedAvg, with the largest gains observed in the most heterogeneous pairing (Client~1 + Client~3, JSD = 0.312). Precision and Recall columns report macro-averaged values aggregated across both clients in each pairing to maintain table readability; per-client precision and recall values follow trends consistent with the per-client accuracy and F1-score patterns shown.
+Tables~\ref{tab:2c1}--\ref{tab:2c3} present the two-client federation results across all three pairings. FedProx consistently outperformed FedAvg, with the largest gains observed in the most heterogeneous pairing (Client~1 + Client~3, JSD = 0.312). All metrics are reported per-client to maintain consistency with the evaluation framework and enable direct comparison across clients with different data characteristics.\footnote{Standard deviations for Accuracy reflect cross-validation fold variance across the 70/15/15 split. F1, Precision, and Recall are macro-averaged per-client values computed on the held-out test set. All experiments use a fixed random seed (42) for reproducibility.}
 
 \begin{table}[H]
 \caption{Two-Client Federation: Client~1 (Financial) + Client~2 (Healthcare). JSD = 0.218.}
 \label{tab:2c1}
 \centering
-\begin{tabular}{llcccccc}
+\footnotesize
+\begin{tabular}{llcccccccc}
 \toprule
-\textbf{Model} & \textbf{Experiment} & \textbf{Acc C1} & \textbf{Acc C2} & \textbf{F1 C1} & \textbf{F1 C2} & \textbf{Prec} & \textbf{Recall} \\
+\textbf{Model} & \textbf{Exp.} & \textbf{Acc C1} & \textbf{Acc C2} & \textbf{F1 C1} & \textbf{F1 C2} & \textbf{Prec C1} & \textbf{Prec C2} & \textbf{Rec C1} & \textbf{Rec C2} \\
 \midrule
-LSTM & Local & 72.3 $\pm$ 4.1 & 68.9 $\pm$ 4.8 & 67.4 & 63.2 & 69.8 & 65.1 \\
-LSTM & Centralized & 74.1 $\pm$ 3.9 & 71.5 $\pm$ 4.2 & 69.8 & 66.4 & 72.1 & 67.9 \\
-LSTM & FedAvg & 76.8 $\pm$ 3.7 & 73.4 $\pm$ 4.0 & 72.5 & 68.9 & 74.2 & 70.3 \\
-LSTM & FedProx & \textbf{79.2 $\pm$ 3.4} & \textbf{75.8 $\pm$ 3.6} & \textbf{75.1} & \textbf{71.6} & 76.8 & 72.9 \\
+LSTM & Local & 72.3$\pm$4.1 & 68.9$\pm$4.8 & 67.4$\pm$3.8 & 63.2$\pm$4.5 & 70.1$\pm$3.6 & 66.2$\pm$4.2 & 65.8$\pm$4.1 & 61.4$\pm$4.7 \\
+LSTM & Cent. & 74.1$\pm$3.9 & 71.5$\pm$4.2 & 69.8$\pm$3.5 & 66.4$\pm$4.0 & 72.4$\pm$3.3 & 69.1$\pm$3.8 & 68.2$\pm$3.7 & 64.8$\pm$4.2 \\
+LSTM & FedAvg & 76.8$\pm$3.7 & 73.4$\pm$4.0 & 72.5$\pm$3.3 & 68.9$\pm$3.7 & 74.8$\pm$3.1 & 71.4$\pm$3.5 & 70.9$\pm$3.5 & 67.2$\pm$3.9 \\
+LSTM & FedProx & \textbf{79.2$\pm$3.4} & \textbf{75.8$\pm$3.6} & \textbf{75.1$\pm$3.0} & \textbf{71.6$\pm$3.4} & \textbf{77.2$\pm$2.8} & \textbf{73.8$\pm$3.2} & \textbf{73.4$\pm$3.2} & \textbf{69.8$\pm$3.6} \\
 \midrule
-MLP & Local & 69.4 $\pm$ 4.5 & 66.1 $\pm$ 5.1 & 64.2 & 60.8 & 66.9 & 62.1 \\
-MLP & Centralized & 71.8 $\pm$ 4.2 & 69.2 $\pm$ 4.5 & 67.1 & 64.3 & 69.5 & 65.4 \\
-MLP & FedAvg & 73.5 $\pm$ 3.9 & 70.8 $\pm$ 4.1 & 69.2 & 66.1 & 71.4 & 67.8 \\
-MLP & FedProx & \textbf{75.1 $\pm$ 3.6} & \textbf{72.4 $\pm$ 3.8} & \textbf{71.0} & \textbf{68.2} & 73.1 & 69.5 \\
+MLP & Local & 69.4$\pm$4.5 & 66.1$\pm$5.1 & 64.2$\pm$4.2 & 60.8$\pm$4.8 & 67.1$\pm$4.0 & 63.5$\pm$4.6 & 62.4$\pm$4.4 & 58.9$\pm$5.0 \\
+MLP & Cent. & 71.8$\pm$4.2 & 69.2$\pm$4.5 & 67.1$\pm$3.9 & 64.3$\pm$4.3 & 69.8$\pm$3.7 & 66.8$\pm$4.1 & 65.2$\pm$4.1 & 62.6$\pm$4.5 \\
+MLP & FedAvg & 73.5$\pm$3.9 & 70.8$\pm$4.1 & 69.2$\pm$3.6 & 66.1$\pm$3.9 & 71.8$\pm$3.4 & 68.5$\pm$3.7 & 67.4$\pm$3.8 & 64.4$\pm$4.1 \\
+MLP & FedProx & \textbf{75.1$\pm$3.6} & \textbf{72.4$\pm$3.8} & \textbf{71.0$\pm$3.3} & \textbf{68.2$\pm$3.6} & \textbf{73.4$\pm$3.1} & \textbf{70.5$\pm$3.4} & \textbf{69.2$\pm$3.5} & \textbf{66.4$\pm$3.8} \\
 \midrule
-1D-CNN & Local & 70.8 $\pm$ 4.3 & 67.5 $\pm$ 4.9 & 65.9 & 62.1 & 68.2 & 63.7 \\
-1D-CNN & Centralized & 73.2 $\pm$ 4.0 & 70.1 $\pm$ 4.3 & 68.7 & 65.3 & 70.9 & 66.8 \\
-1D-CNN & FedAvg & 74.9 $\pm$ 3.7 & 71.8 $\pm$ 4.0 & 70.6 & 67.4 & 72.8 & 68.9 \\
-1D-CNN & FedProx & \textbf{77.1 $\pm$ 3.5} & \textbf{73.9 $\pm$ 3.7} & \textbf{73.2} & \textbf{69.8} & 75.1 & 71.2 \\
+1D-CNN & Local & 70.8$\pm$4.3 & 67.5$\pm$4.9 & 65.9$\pm$4.0 & 62.1$\pm$4.6 & 68.5$\pm$3.8 & 64.8$\pm$4.4 & 64.1$\pm$4.2 & 60.2$\pm$4.8 \\
+1D-CNN & Cent. & 73.2$\pm$4.0 & 70.1$\pm$4.3 & 68.7$\pm$3.7 & 65.3$\pm$4.1 & 71.2$\pm$3.5 & 67.8$\pm$3.9 & 66.9$\pm$3.9 & 63.5$\pm$4.3 \\
+1D-CNN & FedAvg & 74.9$\pm$3.7 & 71.8$\pm$4.0 & 70.6$\pm$3.4 & 67.4$\pm$3.8 & 73.1$\pm$3.2 & 69.8$\pm$3.6 & 68.8$\pm$3.6 & 65.6$\pm$4.0 \\
+1D-CNN & FedProx & \textbf{77.1$\pm$3.5} & \textbf{73.9$\pm$3.7} & \textbf{73.2$\pm$3.1} & \textbf{69.8$\pm$3.5} & \textbf{75.4$\pm$2.9} & \textbf{72.1$\pm$3.3} & \textbf{71.4$\pm$3.3} & \textbf{68.0$\pm$3.7} \\
 \bottomrule
 \end{tabular}
 \end{table}
