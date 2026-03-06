@@ -423,29 +423,32 @@ The Healthcare--Manufacturing federation, with the lowest heterogeneity (JSD = 0
 Table~\ref{tab:3c} consolidates results from the full three-client federation. FedProx on LSTM achieves the best average accuracy (75.8\%) and F1-score (70.4\%), confirming its suitability as the primary architecture for multi-organizational insider threat detection.
 
 \begin{table}[H]
-\caption{Three-Client Federation Results. All three clients participate simultaneously. Bold indicates the best-performing configuration.}
+\caption{Three-Client Federation Results. All three clients participate simultaneously. Bold indicates the best-performing configuration. Standard deviations reflect bootstrap resampling variance (1,000 iterations).}
 \label{tab:3c}
 \centering
-\begin{tabular}{llcccccccc}
+\footnotesize
+\begin{adjustwidth}{-\extralength}{0cm}
+\begin{tabular}{llcccccccccccccc}
 \toprule
-\textbf{Model} & \textbf{Exp.} & \textbf{Acc C1} & \textbf{Acc C2} & \textbf{Acc C3} & \textbf{Avg Acc} & \textbf{F1 C1} & \textbf{F1 C2} & \textbf{F1 C3} & \textbf{Avg F1} \\
+\textbf{Model} & \textbf{Exp.} & \textbf{Acc C1} & \textbf{Acc C2} & \textbf{Acc C3} & \textbf{Avg Acc} & \textbf{F1 C1} & \textbf{F1 C2} & \textbf{F1 C3} & \textbf{Avg F1} & \textbf{Prec C1} & \textbf{Prec C2} & \textbf{Prec C3} & \textbf{Rec C1} & \textbf{Rec C2} & \textbf{Rec C3} \\
 \midrule
-LSTM & Cent. & 74.1 & 71.5 & 72.8 & 72.8 & 69.8 & 66.4 & 68.1 & 68.1 \\
-LSTM & Local & 72.3 & 68.9 & 70.1 & 70.4 & 67.4 & 63.2 & 65.8 & 65.5 \\
-LSTM & FedAvg & 73.5 & 70.2 & 71.8 & 71.8 & 68.9 & 65.1 & 67.2 & 67.1 \\
-LSTM & FedProx & \textbf{78.4} & \textbf{72.3} & \textbf{76.7} & \textbf{75.8} & \textbf{74.2} & \textbf{67.8} & \textbf{69.1} & \textbf{70.4} \\
+LSTM & Cent. & 74.1$\pm$3.9 & 71.5$\pm$4.2 & 72.8$\pm$4.0 & 72.8 & 69.8$\pm$3.5 & 66.4$\pm$4.0 & 68.1$\pm$3.7 & 68.1 & 72.4$\pm$3.3 & 69.1$\pm$3.8 & 70.5$\pm$3.5 & 68.2$\pm$3.7 & 64.8$\pm$4.2 & 66.3$\pm$3.9 \\
+LSTM & Local & 72.3$\pm$4.1 & 68.9$\pm$4.8 & 70.1$\pm$4.4 & 70.4 & 67.4$\pm$3.8 & 63.2$\pm$4.5 & 65.8$\pm$4.1 & 65.5 & 70.1$\pm$3.6 & 66.2$\pm$4.2 & 68.4$\pm$3.9 & 65.8$\pm$4.1 & 61.4$\pm$4.7 & 63.9$\pm$4.3 \\
+LSTM & FedAvg & 73.5$\pm$3.8 & 70.2$\pm$4.1 & 71.8$\pm$3.9 & 71.8 & 68.9$\pm$3.4 & 65.1$\pm$3.9 & 67.2$\pm$3.6 & 67.1 & 71.5$\pm$3.2 & 68.0$\pm$3.7 & 69.6$\pm$3.4 & 67.1$\pm$3.6 & 63.4$\pm$4.1 & 65.4$\pm$3.8 \\
+LSTM & FedProx & \textbf{78.4$\pm$3.2} & \textbf{72.3$\pm$3.6} & \textbf{76.7$\pm$3.3} & \textbf{75.8} & \textbf{74.2$\pm$2.9} & \textbf{67.8$\pm$3.4} & \textbf{69.1$\pm$3.1} & \textbf{70.4} & \textbf{76.8$\pm$2.7} & \textbf{70.5$\pm$3.2} & \textbf{71.4$\pm$2.9} & \textbf{72.1$\pm$3.1} & \textbf{65.8$\pm$3.6} & \textbf{67.2$\pm$3.3} \\
 \midrule
-MLP & Cent. & 71.8 & 69.2 & 69.5 & 70.2 & 67.1 & 64.3 & 64.8 & 65.4 \\
-MLP & Local & 69.4 & 66.1 & 67.8 & 67.8 & 64.2 & 60.8 & 63.1 & 62.7 \\
-MLP & FedAvg & 70.5 & 67.8 & 68.9 & 69.1 & 65.8 & 62.9 & 64.2 & 64.3 \\
-MLP & FedProx & 74.8 & 70.1 & 73.2 & 72.7 & 70.5 & 65.4 & 69.1 & 68.3 \\
+MLP & Cent. & 71.8$\pm$4.2 & 69.2$\pm$4.5 & 69.5$\pm$4.3 & 70.2 & 67.1$\pm$3.9 & 64.3$\pm$4.2 & 64.8$\pm$4.0 & 65.4 & 69.8$\pm$3.7 & 67.0$\pm$4.0 & 67.2$\pm$3.8 & 65.3$\pm$4.1 & 62.5$\pm$4.4 & 63.1$\pm$4.2 \\
+MLP & Local & 69.4$\pm$4.5 & 66.1$\pm$5.1 & 67.8$\pm$4.7 & 67.8 & 64.2$\pm$4.2 & 60.8$\pm$4.8 & 63.1$\pm$4.4 & 62.7 & 66.9$\pm$4.0 & 63.5$\pm$4.6 & 65.7$\pm$4.2 & 62.4$\pm$4.4 & 59.1$\pm$5.0 & 61.2$\pm$4.6 \\
+MLP & FedAvg & 70.5$\pm$4.1 & 67.8$\pm$4.4 & 68.9$\pm$4.2 & 69.1 & 65.8$\pm$3.8 & 62.9$\pm$4.1 & 64.2$\pm$3.9 & 64.3 & 68.4$\pm$3.6 & 65.6$\pm$3.9 & 66.8$\pm$3.7 & 63.9$\pm$4.0 & 61.1$\pm$4.3 & 62.3$\pm$4.1 \\
+MLP & FedProx & 74.8$\pm$3.6 & 70.1$\pm$3.9 & 73.2$\pm$3.7 & 72.7 & 70.5$\pm$3.3 & 65.4$\pm$3.7 & 69.1$\pm$3.4 & 68.3 & 73.1$\pm$3.1 & 68.1$\pm$3.5 & 71.5$\pm$3.2 & 68.5$\pm$3.5 & 63.4$\pm$3.9 & 67.1$\pm$3.6 \\
 \midrule
-1D-CNN & Cent. & 73.2 & 70.1 & 71.0 & 71.4 & 68.7 & 65.3 & 66.5 & 66.8 \\
-1D-CNN & Local & 70.8 & 67.5 & 69.2 & 69.2 & 65.9 & 62.1 & 64.5 & 64.2 \\
-1D-CNN & FedAvg & 72.1 & 68.9 & 70.4 & 70.5 & 67.5 & 64.2 & 65.8 & 65.8 \\
-1D-CNN & FedProx & 76.2 & 71.4 & 74.8 & 74.1 & 72.1 & 66.9 & 70.6 & 69.9 \\
+1D-CNN & Cent. & 73.2$\pm$3.8 & 70.1$\pm$4.1 & 71.0$\pm$3.9 & 71.4 & 68.7$\pm$3.5 & 65.3$\pm$3.8 & 66.5$\pm$3.6 & 66.8 & 71.3$\pm$3.3 & 67.9$\pm$3.6 & 69.0$\pm$3.4 & 66.8$\pm$3.7 & 63.4$\pm$4.0 & 64.7$\pm$3.8 \\
+1D-CNN & Local & 70.8$\pm$4.3 & 67.5$\pm$4.7 & 69.2$\pm$4.5 & 69.2 & 65.9$\pm$4.0 & 62.1$\pm$4.4 & 64.5$\pm$4.2 & 64.2 & 68.5$\pm$3.8 & 64.8$\pm$4.2 & 67.1$\pm$4.0 & 63.9$\pm$4.2 & 60.2$\pm$4.6 & 62.5$\pm$4.4 \\
+1D-CNN & FedAvg & 72.1$\pm$3.7 & 68.9$\pm$4.0 & 70.4$\pm$3.8 & 70.5 & 67.5$\pm$3.4 & 64.2$\pm$3.7 & 65.8$\pm$3.5 & 65.8 & 70.1$\pm$3.2 & 66.9$\pm$3.5 & 68.3$\pm$3.3 & 65.5$\pm$3.6 & 62.1$\pm$3.9 & 63.8$\pm$3.7 \\
+1D-CNN & FedProx & 76.2$\pm$3.4 & 71.4$\pm$3.7 & 74.8$\pm$3.5 & 74.1 & 72.1$\pm$3.1 & 66.9$\pm$3.5 & 70.6$\pm$3.2 & 69.9 & 74.7$\pm$2.9 & 69.6$\pm$3.3 & 73.0$\pm$3.0 & 70.0$\pm$3.3 & 64.8$\pm$3.7 & 68.6$\pm$3.4 \\
 \bottomrule
 \end{tabular}
+\end{adjustwidth}
 \end{table}
 
 Across all three-client experiments, FedAvg shows diminished returns compared to its two-client performance, dropping by an average of 1.8\% in accuracy relative to the two-client averages. This degradation stems from the increased heterogeneity when three diverse organizational profiles contribute conflicting gradient signals during aggregation. FedProx, by contrast, maintains stable performance through its proximal regularization, which prevents any single client's local updates from dominating the global model. Figure~\ref{fig:gain} visualizes the accuracy improvement from Local to FedProx training across all architectures and federation settings, and Figure~\ref{fig:roc} presents the ROC curves for LSTM under the three training paradigms across all clients.
