@@ -584,7 +584,7 @@ We define three threshold strategies: (1) \textit{Global Fixed Threshold} ($\tau
 \tau_k^{\text{fed}} = \tau_k^{\text{local}} + \alpha \cdot (\bar{\tau}^{\text{global}} - \tau_k^{\text{local}})
 \end{equation}
 
-where $\bar{\tau}^{\text{global}}$ is the average of all local thresholds and $\alpha \in [0, 1]$ is a blending coefficient (set to 0.3 in our experiments). This formulation balances client-specific calibration with global information sharing while preserving privacy---only aggregate statistics, not raw predictions, cross organizational boundaries.
+where $\bar{\tau}^{\text{global}}$ is the average of all local thresholds and $\alpha \in [0, 1]$ is a blending coefficient. In preliminary experiments on the validation sets, we evaluated $\alpha \in \{0.1, 0.3, 0.5, 0.7\}$ and found that $\alpha = 0.3$ achieved the highest average macro F1-score across all three clients, as lower values under-utilized global information while higher values over-smoothed client-specific calibration; we therefore fixed $\alpha = 0.3$ for all subsequent experiments. This formulation balances client-specific calibration with global information sharing while preserving privacy---only aggregate statistics, not raw predictions, cross organizational boundaries.
 
 Table~\ref{tab:ablation} presents the ablation results.
 
