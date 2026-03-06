@@ -329,7 +329,7 @@ Based on the macro-averaged metrics in Table~\ref{tab:baseline}, LSTM demonstrat
 
 \subsection{Two-Client Federation Results}
 
-Tables~\ref{tab:2c1}--\ref{tab:2c3} present the two-client federation results across all three pairings. FedProx consistently outperformed FedAvg, with the largest gains observed in the most heterogeneous pairing (Client~1 + Client~3, JSD = 0.312). All metrics are reported per-client to maintain consistency with the evaluation framework and enable direct comparison across clients with different data characteristics.\footnote{Standard deviations for Accuracy reflect cross-validation fold variance across the 70/15/15 split. F1, Precision, and Recall are macro-averaged per-client values computed on the held-out test set. All experiments use a fixed random seed (42) for reproducibility.}
+Tables~\ref{tab:2c1}--\ref{tab:2c3} present the two-client federation results across all three pairings. FedProx consistently outperformed FedAvg, with the largest gains observed in the most heterogeneous pairing (Client~1 + Client~3, JSD = 0.312). All metrics are reported per-client to maintain consistency with the evaluation framework and enable direct comparison across clients with different data characteristics.\footnote{Standard deviations reflect bootstrap resampling variance (1,000 iterations) on the held-out test set. F1, Precision, and Recall are macro-averaged per-client values. All experiments use a fixed random seed (42) for reproducibility; single-seed execution means that reported variability represents confidence interval estimates rather than inter-run variance.}
 
 \begin{table}[H]
 \caption{Two-Client Federation: Client~1 (Financial) + Client~2 (Healthcare). JSD = 0.218.}
