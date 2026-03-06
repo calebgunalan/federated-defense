@@ -580,6 +580,7 @@ The comparative analysis reveals that inter-client heterogeneity in the three-cl
 We define three threshold strategies: (1) \textit{Global Fixed Threshold} ($\tau = 0.5$), which applies a uniform decision boundary across all clients; (2) \textit{Per-Client Local Threshold}, which tunes $\tau_k$ for each client $k$ independently using only local validation data to maximize macro F1-score; and (3) \textit{Federated Threshold Calibration}, where each client computes class-conditional score distributions $P(s \mid y=0)$ and $P(s \mid y=1)$ on its local validation set, shares only the sufficient statistics (mean and variance of each distribution) with the server, and receives back a globally-informed calibration adjustment. Formally, the federated calibration threshold for client $k$ is:
 
 \begin{equation}
+\label{eq:threshold}
 \tau_k^{\text{fed}} = \tau_k^{\text{local}} + \alpha \cdot (\bar{\tau}^{\text{global}} - \tau_k^{\text{local}})
 \end{equation}
 
