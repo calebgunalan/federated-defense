@@ -1,99 +1,52 @@
 
 
-# Research-to-Publication Suite
-## Federated Learning for Cross-Organizational Insider Threat Detection
+# Plan: Fix Remaining Reviewer Issues in LaTeX Manuscript
 
-A comprehensive web application to manage your entire research journey — from literature review through paper submission — with progress tracking, note-taking, and structured workflows across all 9 phases.
-
----
-
-### Authentication & User Profile
-- Email/password login and signup via Supabase Auth
-- Personal dashboard showing overall research progress at a glance
+After cross-referencing all reviewer comments against the current 789-line manuscript, many items are already addressed (back matter, per-client metrics, std devs, feature table, µ sensitivity, synthetic data defense, references). The following specific issues remain:
 
 ---
 
-### Phase Tracker & Interactive Timeline
-- Visual timeline/roadmap showing all 9 phases with their week ranges (Weeks 1–22)
-- Each phase displayed as a card with completion percentage, status (Not Started / In Progress / Complete), and deadline
-- Progress bar showing overall journey completion
-- Ability to adjust start date and have all phase deadlines auto-calculate
+## Critical Fixes
+
+### 1. Figure 1 / Section 3.3 Text Contradiction (line 126)
+The text says "applied PCA followed by t-SNE for two-dimensional visualization" but Figure 1 is a grouped bar chart. Two changes:
+- Rewrite the paragraph at line 126 to describe the bar chart accurately (remove PCA/t-SNE claim)
+- Add a new **Figure 2** (t-SNE scatter plot) as a separate TikZ figure after the bar chart, showing client clusters in 2D embedding space. This strengthens the visual case for domain shift and matches the reference paper's Figure 2. Renumber subsequent figures.
+
+### 2. Footnote Contradiction (line 308)
+"cross-validation fold variance across the 70/15/15 split" is contradictory — a fixed split has no folds. Change to: "Standard deviations reflect bootstrap resampling variance (1000 iterations) on the held-out test set."
+
+### 3. Equation Reference Error (line 698)
+Discussion says "the mathematical formulation (Equation 3)" for the federated calibration threshold, but it's Equation 5. Replace with `Equation~\ref{eq:threshold}` and add a label to the threshold equation at line 558-560.
+
+### 4. Limitations Section (line 704)
+Same "cross-validation fold variance" contradiction appears here. Update to match the bootstrap resampling language.
 
 ---
 
-### Phase 1: Literature Manager
-- Organize readings into the three concentric circles: FL Methodology, Insider Threat Detection, FL in Cybersecurity
-- Add papers with title, authors, year, source, key takeaways, and relevance notes
-- Tag papers (e.g., "CERT dataset", "FedAvg", "FedProx", "gap evidence")
-- **Gap Statement Builder** — a dedicated rich text area to draft and iterate on your gap statement, with a checklist of what a strong gap statement needs
+## Important Fixes
+
+### 5. Three-Client Table Lacks Std Devs and Per-Client Prec/Rec (lines 401-425)
+Table 6 (three-client results) is missing ± standard deviations and per-client Precision/Recall columns that Tables 3-5 have. Add these columns and std devs for consistency.
+
+### 6. 47-Experiment Count Clarification
+The "−5 redundant local baselines" subtraction is unclear. Replace with a clearer breakdown table or sentence: 4 baselines + 3 pairings × 3 architectures × 2 FL strategies = 18 two-client FL + 3 × 2 = 6 three-client FL + 3 pairings × 3 arch local = 9 two-client local + 3 arch local (three-client) = 3 + 3 threshold strategies + 4 µ values = 47. Provide explicit accounting.
+
+### 7. α = 0.3 Justification (line 562 and 698)
+Add 1-2 sentences explaining that preliminary validation across α ∈ {0.1, 0.3, 0.5, 0.7} showed α = 0.3 optimal on the validation sets, and note this in both the Methods and Discussion sections.
 
 ---
 
-### Phase 2: Dataset & Experiment Design
-- Document dataset choices (CERT versions, LANL) with notes on why each was selected
-- Client partition designer — describe each simulated client (e.g., "Financial Firm", "Healthcare Org", "Manufacturing Co") with their characteristics
-- JSD measurement log — record heterogeneity measurements between client pairs
-- Checklist for dataset preparation tasks
+## Minor Fixes
+
+### 8. Model Size Derivation (line 702)
+Add parenthetical: "(computed as parameter count × 4 bytes for float32 representation: LSTM with 2×128 hidden units ≈ 2.35M parameters, MLP with 256→128→64 layers ≈ 0.9M parameters, 1D-CNN with 3 conv blocks ≈ 1.68M parameters)"
+
+### 9. TikZ Figures Note
+The reviewer concern about "ASCII/text art" figures is a misunderstanding — TikZ compiles to publication-quality vector graphics. No change needed in the LaTeX. The compiled PDF will contain proper vector figures.
 
 ---
 
-### Phase 3: Feature Engineering Tracker
-- Feature catalog — list all behavioral features you're extracting (logon events, after-hours ratio, USB insertions, etc.)
-- Time window decision log with rationale
-- Class imbalance strategy notes
-- Preprocessing pipeline checklist
-
----
-
-### Phase 4: Model Architecture Selection
-- Architecture comparison table for candidates (LSTM, MLP, 1D CNN, Autoencoder)
-- Log centralized baseline results: accuracy, macro precision, macro recall, macro F1 per model
-- Selection rationale notes for which models advance to FL experiments
-
----
-
-### Phase 5: FL Experiment Dashboard
-- Experiment matrix showing all conditions: Local, Centralized, FedAvg, FedProx across all client pairings (A+B, A+C, B+C, A+B+C)
-- Results entry for each experiment with key metrics
-- µ Sensitivity Analysis section — log results for µ ∈ {0.001, 0.01, 0.1, 1.0}
-- Notes area for observations and unexpected findings
-
----
-
-### Phase 6: Ablation Study
-- Track three threshold calibration configurations (global, per-client local, federated calibration)
-- Results comparison table
-- Findings and interpretation notes
-
----
-
-### Phase 7: Statistical Validation
-- Log statistical test results (McNemar's test, bootstrap CIs) with p-values
-- ROC curve reference notes
-- Checklist for all required statistical validations
-
----
-
-### Phase 8: Writing Progress
-- Section-by-section writing tracker for the MDPI format: Abstract, Introduction, Related Work, Materials & Methods, Results, Discussion, Conclusions
-- Status per section (Draft / Review / Final)
-- Key points checklist for each section (e.g., Introduction needs 4-paragraph arc, Discussion needs 4 elements)
-- Word count tracking per section
-
----
-
-### Phase 9: Submission Checklist
-- Pre-submission checklist: manuscript, cover letter, suggested reviewers, final literature sweep
-- Reviewer suggestions list with name, affiliation, and relevant papers
-- Post-submission tracker: desk review status, peer review status, revision rounds
-- Revision response log — track each reviewer comment and your point-by-point response
-
----
-
-### Design & Experience
-- Clean, professional academic aesthetic with a dark/light mode toggle
-- Sidebar navigation for quick access to any phase
-- Dashboard home page with at-a-glance progress across all phases
-- Mobile-responsive for on-the-go note updates
-- Uses Supabase for database and authentication (via Lovable Cloud)
+## Implementation
+All changes are in `src/data/latexContent.ts`. Approximately 12 targeted edits to the raw template literal, adding ~40 lines (t-SNE figure, table expansion) and modifying ~15 existing lines.
 
