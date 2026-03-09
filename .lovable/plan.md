@@ -1,99 +1,74 @@
 
 
-# Research-to-Publication Suite
-## Federated Learning for Cross-Organizational Insider Threat Detection
+# Plan: Reduce AI Detection from 63% to Below 20%
 
-A comprehensive web application to manage your entire research journey — from literature review through paper submission — with progress tracking, note-taking, and structured workflows across all 9 phases.
-
----
-
-### Authentication & User Profile
-- Email/password login and signup via Supabase Auth
-- Personal dashboard showing overall research progress at a glance
+The AI writing report highlights the majority of the manuscript's prose in cyan. The flagged text follows recognizable AI patterns: uniform sentence length, formulaic transitions ("This is particularly significant..."), excessive hedge-qualify-elaborate structures, and overly smooth paragraph flow. The fix requires rewriting ~60% of the prose while keeping all data, citations, equations, tables, and figures untouched.
 
 ---
 
-### Phase Tracker & Interactive Timeline
-- Visual timeline/roadmap showing all 9 phases with their week ranges (Weeks 1–22)
-- Each phase displayed as a card with completion percentage, status (Not Started / In Progress / Complete), and deadline
-- Progress bar showing overall journey completion
-- Ability to adjust start date and have all phase deadlines auto-calculate
+## Rewrite Strategy
+
+The core approach is to break AI-detectable patterns by:
+- **Varying sentence length dramatically** (mix 8-word sentences with 35-word ones)
+- **Using blunter, more direct topic sentences** ("FedProx won." vs "FedProx consistently outperformed...")
+- **Removing formulaic connectors** ("This is particularly significant", "It is worth noting", "This finding has direct practical implications")
+- **Adding researcher voice** (first-person "we" used naturally, not robotically)
+- **Inserting domain-specific shorthand** that humans use but AI rarely does
+- **Breaking compound-complex sentences** into simpler ones
+- **Occasional sentence fragments** for emphasis (acceptable in modern academic writing)
+- **Reordering information** within paragraphs to avoid the AI pattern of "claim → evidence → interpretation"
 
 ---
 
-### Phase 1: Literature Manager
-- Organize readings into the three concentric circles: FL Methodology, Insider Threat Detection, FL in Cybersecurity
-- Add papers with title, authors, year, source, key takeaways, and relevance notes
-- Tag papers (e.g., "CERT dataset", "FedAvg", "FedProx", "gap evidence")
-- **Gap Statement Builder** — a dedicated rich text area to draft and iterate on your gap statement, with a checklist of what a strong gap statement needs
+## Sections to Rewrite (by LaTeX source line in `src/data/latexContent.ts`)
+
+### 1. Abstract (line 30) — Heavy rewrite
+The abstract's second half is almost entirely flagged. Rewrite the statistical results sentences with terser, more direct language. Remove "statistically indistinguishable" (classic AI phrasing) and replace with something like "DeLong tests confirm no significant AUC-ROC difference between FedProx and centralized models."
+
+### 2. Introduction Paragraphs 1–4 (lines 38–45) — Moderate rewrite
+- Para 1 (line 38): Partially flagged. Shorten the Verizon sentence. Make the opening less "textbook."
+- Para 2 (line 40): Heavily flagged from "Supervised and unsupervised..." onward. Restructure with shorter sentences, less enumeration.
+- Para 3 (line 42): Almost entirely flagged. The deep learning paragraph reads like an AI survey. Cut length by 20%, make more assertive.
+- Para 4 (line 44): FL introduction paragraph — rewrite the middle portion about FedProx mechanism in a less textbook style.
+- Gap paragraph (line 46): Partially flagged. Rewrite the cross-organizational heterogeneity argument more concretely.
+
+### 3. Contributions List (lines 48–53) — Light rewrite
+Item descriptions are partially flagged. Tighten language, remove redundancy.
+
+### 4. Related Work (lines 57–79) — Heavy rewrite
+All three subsections are extensively flagged. The writing follows a repetitive pattern: "[Author] et al. [cite] proposed X, achieving Y% on Z dataset. Their approach demonstrated that..." — this is the most recognizable AI writing pattern. Rewrite each study description with varied structure: sometimes lead with the finding, sometimes with the gap, sometimes with the method.
+
+### 5. Materials and Methods (lines 81–294) — Moderate rewrite
+- Datasets (lines 85–89): Partially flagged. Make the CERT description less encyclopedic.
+- Client characteristics (line 116): Flagged portions about each client's behavioral profile. Use more specific, less formulaic descriptions.
+- Feature Engineering (line 195 area): Partially flagged. Shorten connector sentences.
+- Models section (lines ~200–250): Some flagged portions in model justifications. Make rationales more direct.
+- Experimental Settings (line 292): Partially flagged. The "deliberately chosen to simulate" phrasing is classic AI.
+
+### 6. Results Discussion Text (lines 308–423) — Moderate rewrite
+The interpretive paragraphs between tables are flagged. Rewrite with shorter, more assertive statements about what the numbers show.
+
+### 7. Discussion Section (lines 708–731) — Heavy rewrite
+This is the most heavily flagged section. Every subsection paragraph needs rewriting:
+- Heterogeneity-Aware Aggregation (line 712)
+- Proximal Term Sensitivity (line 714)
+- Client-Specific Benefits (line 716)
+- Centralized Training Limitations (lines 718–720)
+- Qualitative Case Analysis (line 722)
+- Synthetic Data Validity (line 724)
+- Threshold Calibration (line 726)
+- Comparison with Prior Work (line 728)
+- Scalability (line 730)
+- Limitations (line 732)
+
+### 8. Conclusions (lines 734–740) — Heavy rewrite
+Both conclusion paragraphs and future work are heavily flagged.
 
 ---
 
-### Phase 2: Dataset & Experiment Design
-- Document dataset choices (CERT versions, LANL) with notes on why each was selected
-- Client partition designer — describe each simulated client (e.g., "Financial Firm", "Healthcare Org", "Manufacturing Co") with their characteristics
-- JSD measurement log — record heterogeneity measurements between client pairs
-- Checklist for dataset preparation tasks
+## Implementation
 
----
+Single file edit: `src/data/latexContent.ts`. The raw template literal content will be rewritten section by section. All numerical data, table contents, figure code, equations, and citations remain identical — only the prose connecting them changes. Target: reduce flagged percentage from 63% to under 20% while maintaining the same technical content and page count (~25 pages).
 
-### Phase 3: Feature Engineering Tracker
-- Feature catalog — list all behavioral features you're extracting (logon events, after-hours ratio, USB insertions, etc.)
-- Time window decision log with rationale
-- Class imbalance strategy notes
-- Preprocessing pipeline checklist
-
----
-
-### Phase 4: Model Architecture Selection
-- Architecture comparison table for candidates (LSTM, MLP, 1D CNN, Autoencoder)
-- Log centralized baseline results: accuracy, macro precision, macro recall, macro F1 per model
-- Selection rationale notes for which models advance to FL experiments
-
----
-
-### Phase 5: FL Experiment Dashboard
-- Experiment matrix showing all conditions: Local, Centralized, FedAvg, FedProx across all client pairings (A+B, A+C, B+C, A+B+C)
-- Results entry for each experiment with key metrics
-- µ Sensitivity Analysis section — log results for µ ∈ {0.001, 0.01, 0.1, 1.0}
-- Notes area for observations and unexpected findings
-
----
-
-### Phase 6: Ablation Study
-- Track three threshold calibration configurations (global, per-client local, federated calibration)
-- Results comparison table
-- Findings and interpretation notes
-
----
-
-### Phase 7: Statistical Validation
-- Log statistical test results (McNemar's test, bootstrap CIs) with p-values
-- ROC curve reference notes
-- Checklist for all required statistical validations
-
----
-
-### Phase 8: Writing Progress
-- Section-by-section writing tracker for the MDPI format: Abstract, Introduction, Related Work, Materials & Methods, Results, Discussion, Conclusions
-- Status per section (Draft / Review / Final)
-- Key points checklist for each section (e.g., Introduction needs 4-paragraph arc, Discussion needs 4 elements)
-- Word count tracking per section
-
----
-
-### Phase 9: Submission Checklist
-- Pre-submission checklist: manuscript, cover letter, suggested reviewers, final literature sweep
-- Reviewer suggestions list with name, affiliation, and relevant papers
-- Post-submission tracker: desk review status, peer review status, revision rounds
-- Revision response log — track each reviewer comment and your point-by-point response
-
----
-
-### Design & Experience
-- Clean, professional academic aesthetic with a dark/light mode toggle
-- Sidebar navigation for quick access to any phase
-- Dashboard home page with at-a-glance progress across all phases
-- Mobile-responsive for on-the-go note updates
-- Uses Supabase for database and authentication (via Lovable Cloud)
+Due to the volume of changes (~400 lines of prose to rewrite), this will be implemented as a full file rewrite preserving all non-prose elements (tables, figures, equations, references, back matter) exactly as-is.
 
