@@ -90,7 +90,7 @@ We use two benchmark insider threat datasets to construct three organizationally
 
 \subsection{Data Splits and Client Characteristics}
 
-TableTable~1 summarizes the three datasets. The differences in sample size and malicious class proportion, though modest in percentage terms, translate to substantially different detection challenges for each client.
+Table~1 summarizes the three datasets. The differences in sample size and malicious class proportion, though modest in percentage terms, translate to substantially different detection challenges for each client.
 
 \begin{table}[H]
 \caption{Dataset description and client characteristics. All splits follow a 70/15/15 ratio.}
@@ -123,7 +123,7 @@ We quantify distributional dissimilarity with pairwise Jensen--Shannon Divergenc
 
 where $M = \frac{1}{2}(P + Q)$ and $D_{\text{KL}}$ is the Kullback--Leibler divergence. The resulting values---0.218 (Client~1 vs.\ Client~2), 0.312 (Client~1 vs.\ Client~3), and 0.174 (Client~2 vs.\ Client~3)---confirm non-IID conditions across all pairs. These numbers sit in the same range as the heterogeneity levels Elshenawy et al.~[36] reported for their medical imaging federation (JSD 0.158--0.278), which allows cross-domain comparison of FL behavior under comparable distributional mismatch.
 
-Two complementary visualizations illustrate feature-level differences. FigureFigure~1 shows mean normalized values of six representative behavioral features as a grouped bar chart. The variation in Login Frequency, File Access Count, and After-Hours Ratio is immediately apparent. FigureFigure~2 plots a two-dimensional t-SNE embedding of the full 24-feature vectors, computed after PCA reduction to 10 components (preserving 92.4\% of variance). The three clients form tight, well-separated clusters, confirming the domain shift driven by differences in organizational operations and workforce composition.
+Two complementary visualizations illustrate feature-level differences. Figure~1 shows mean normalized values of six representative behavioral features as a grouped bar chart. The variation in Login Frequency, File Access Count, and After-Hours Ratio is immediately apparent. Figure~2 plots a two-dimensional t-SNE embedding of the full 24-feature vectors, computed after PCA reduction to 10 components (preserving 92.4\% of variance). The three clients form tight, well-separated clusters, confirming the domain shift driven by differences in organizational operations and workforce composition.
 
 \begin{figure}[H]
 \centering
@@ -193,7 +193,7 @@ coordinates {
 
 \subsection{Feature Engineering}
 
-For each user, within each time window (daily), we compute behavioral aggregates forming a feature vector of dimension $d = 24$. Six categories make up the feature set, summarized in TableTable~2: (1)~\textit{Authentication features}---login counts, after-hours login ratios, failed attempts, session durations; (2)~\textit{File access features}---unique file counts, sensitive file ratios, download-to-upload ratios; (3)~\textit{Communication features}---external email ratios, volume anomaly scores, attachment sizes; (4)~\textit{Device features}---USB insertion frequencies, removable media write volumes, device diversity; (5)~\textit{Network features}---HTTP request volumes, flagged domain counts, bandwidth anomaly scores; (6)~\textit{Derived temporal features}---behavioral volatility (7-day rolling standard deviations), day-of-week entropy, inter-session gaps. This pipeline gives models a standardized input regardless of raw log format differences between CERT and LANL. All features were z-score normalized per client.
+For each user, within each time window (daily), we compute behavioral aggregates forming a feature vector of dimension $d = 24$. Six categories make up the feature set, summarized in Table~2: (1)~\textit{Authentication features}---login counts, after-hours login ratios, failed attempts, session durations; (2)~\textit{File access features}---unique file counts, sensitive file ratios, download-to-upload ratios; (3)~\textit{Communication features}---external email ratios, volume anomaly scores, attachment sizes; (4)~\textit{Device features}---USB insertion frequencies, removable media write volumes, device diversity; (5)~\textit{Network features}---HTTP request volumes, flagged domain counts, bandwidth anomaly scores; (6)~\textit{Derived temporal features}---behavioral volatility (7-day rolling standard deviations), day-of-week entropy, inter-session gaps. This pipeline gives models a standardized input regardless of raw log format differences between CERT and LANL. All features were z-score normalized per client.
 
 \begin{table}[H]
 \caption{Summary of the 24 engineered behavioral features organized by category. Each feature is computed as a daily aggregate per user.}
@@ -250,7 +250,7 @@ We now describe the four architectures evaluated. The goal is to identify which 
 
 \subsection{FL Architecture and Aggregation Strategies}
 
-The federated setup uses the Flower framework~[43] in a server--client architecture (FigureFigure~4). Two aggregation strategies are compared:
+The federated setup uses the Flower framework~[43] in a server--client architecture (Figure~4). Two aggregation strategies are compared:
 
 \textbf{FedAvg.} The standard Federated Averaging algorithm aggregates client model weights using a weighted average:
 \begin{equation}
@@ -307,7 +307,7 @@ where $C = 2$ (normal, malicious). Accuracy alone overstates performance under c
 
 \subsection{Baseline Architecture Comparison}
 
-Centralized training on pooled data from all three clients gives the theoretical performance ceiling. TableTable~3 shows the results. LSTM leads with 76.4\% accuracy and 0.887 AUC-ROC, followed by 1D-CNN (74.8\%, 0.874) and MLP (73.1\%, 0.861). The Autoencoder, evaluated in supervised mode, trails at 71.3\% (0.842).
+Centralized training on pooled data from all three clients gives the theoretical performance ceiling. Table~3 shows the results. LSTM leads with 76.4\% accuracy and 0.887 AUC-ROC, followed by 1D-CNN (74.8\%, 0.874) and MLP (73.1\%, 0.861). The Autoencoder, evaluated in supervised mode, trails at 71.3\% (0.842).
 
 \begin{table}[H]
 \caption{Baseline centralized performance comparison. Bold indicates models selected for FL experiments. All metrics are Macro-Averaged. The epoch column denotes the final training epoch attained prior to termination by the early stopping criterion.}
@@ -329,7 +329,7 @@ The gap between LSTM and 1D-CNN is small (1.6\% accuracy, 1.1\% F1), which sugge
 
 \subsection{Two-Client Federation Results}
 
-TablesTable~4--Table~6 present two-client results across all three pairings. FedProx beats FedAvg in every case, with the widest margin on the most heterogeneous pair (Client~1 + Client~3, JSD = 0.312). All metrics are per-client.\footnote{Standard deviations reflect bootstrap resampling variance (1,000 iterations) on the held-out test set. F1, Precision, and Recall are macro-averaged per-client values. All experiments use a fixed random seed (42); single-seed execution means reported variability represents confidence interval estimates, not inter-run variance.}
+Tables~4--Table~6 present two-client results across all three pairings. FedProx beats FedAvg in every case, with the widest margin on the most heterogeneous pair (Client~1 + Client~3, JSD = 0.312). All metrics are per-client.\footnote{Standard deviations reflect bootstrap resampling variance (1,000 iterations) on the held-out test set. F1, Precision, and Recall are macro-averaged per-client values. All experiments use a fixed random seed (42); single-seed execution means reported variability represents confidence interval estimates, not inter-run variance.}
 
 \begin{table}[H]
 \caption{Two-Client Federation: Client~1 (Financial) + Client~2 (Healthcare). JSD = 0.218.}
@@ -420,7 +420,7 @@ With the lowest heterogeneity (JSD = 0.174), the Healthcare--Manufacturing pair 
 
 \subsection{Three-Client Federation Results}
 
-TableTable~7 gives the full three-client results. LSTM + FedProx tops the board at 75.8\% average accuracy and 70.4\% macro F1.
+Table~7 gives the full three-client results. LSTM + FedProx tops the board at 75.8\% average accuracy and 70.4\% macro F1.
 
 \begin{table}[H]
 \caption{Three-Client Federation Results. All three clients participate simultaneously. Bold indicates the best-performing configuration. Standard deviations reflect bootstrap resampling variance (1,000 iterations).}
@@ -451,7 +451,7 @@ MLP & FedProx & 74.8$\pm$3.6 & 70.1$\pm$3.9 & 73.2$\pm$3.7 & 72.7 & 70.5$\pm$3.3
 \end{adjustwidth}
 \end{table}
 
-FedAvg's gains, solid in two-client experiments, shrink in the three-client setting---accuracy drops an average of 1.8\% relative to two-client performance. Three diverse organizational profiles produce conflicting gradient signals that FedAvg cannot reconcile. FedProx holds steady because its proximal term keeps any single client from pulling the global model too far toward its own distribution. FigureFigure~5 shows the accuracy jump from Local to FedProx for each architecture and scenario; FigureFigure~6 presents LSTM ROC curves across all three training paradigms.
+FedAvg's gains, solid in two-client experiments, shrink in the three-client setting---accuracy drops an average of 1.8\% relative to two-client performance. Three diverse organizational profiles produce conflicting gradient signals that FedAvg cannot reconcile. FedProx holds steady because its proximal term keeps any single client from pulling the global model too far toward its own distribution. Figure~5 shows the accuracy jump from Local to FedProx for each architecture and scenario; Figure~6 presents LSTM ROC curves across all three training paradigms.
 
 \begin{figure}[H]
 \centering
@@ -532,7 +532,7 @@ FedAvg's gains, solid in two-client experiments, shrink in the three-client sett
 
 \subsection{Proximal Term Sensitivity Analysis}
 
-How sensitive are the results to the choice of $\mu$? We ran LSTM + FedProx in the three-client federation across $\mu \in \{0.001, 0.01, 0.1, 1.0\}$. TableTable~8 has the numbers.
+How sensitive are the results to the choice of $\mu$? We ran LSTM + FedProx in the three-client federation across $\mu \in \{0.001, 0.01, 0.1, 1.0\}$. Table~8 has the numbers.
 
 \begin{table}[H]
 \caption{Proximal term ($\mu$) sensitivity analysis for LSTM + FedProx in the three-client federation. Bold indicates the optimal configuration.}
@@ -578,7 +578,7 @@ The pattern is an inverted U. Too little regularization ($\mu = 0.001$): local m
 
 \subsection{Client-Adaptive Threshold Calibration}
 
-Three-client heterogeneity limits what standard FL can achieve. We tested whether adapting each client's decision threshold to its own data distribution could squeeze out better minority-class detection. Using LSTM + FedProx (the best three-client configuration from TableTable~7) as the base, we compared three strategies:
+Three-client heterogeneity limits what standard FL can achieve. We tested whether adapting each client's decision threshold to its own data distribution could squeeze out better minority-class detection. Using LSTM + FedProx (the best three-client configuration from Table~7) as the base, we compared three strategies:
 
 (1) \textit{Global Fixed Threshold} ($\tau = 0.5$)---same boundary for all clients. (2) \textit{Per-Client Local Threshold}---$\tau_k$ tuned per client using only local validation data to maximize macro F1. (3) \textit{Federated Threshold Calibration}---each client computes class-conditional score distributions $P(s \mid y=0)$ and $P(s \mid y=1)$ on its local validation set, shares only sufficient statistics (mean and variance) with the server, and receives a globally-informed calibration adjustment. The federated calibration threshold for client $k$ is:
 
@@ -589,7 +589,7 @@ Three-client heterogeneity limits what standard FL can achieve. We tested whethe
 
 where $\bar{\tau}^{\text{global}}$ averages all local thresholds and $\alpha \in [0, 1]$ is a blending coefficient. We swept $\alpha \in \{0.1, 0.3, 0.5, 0.7\}$ on the validation sets; $\alpha = 0.3$ gave the best average macro F1 across all three clients. Lower values under-utilized global information; higher values over-smoothed client-specific calibration. We fixed $\alpha = 0.3$ for all subsequent experiments. The formulation balances local and global information while preserving privacy---only aggregate statistics cross organizational boundaries, not raw predictions.
 
-TableTable~9 has the results.
+Table~9 has the results.
 
 \begin{table}[H]
 \caption{Ablation Study: Threshold Calibration with LSTM + FedProx. The federated calibration strategy shares only aggregate score distribution statistics across clients, preserving privacy.}
@@ -606,7 +606,7 @@ Per-Client Local & 76.2 & 73.8 & 74.1 & 71.4 \\
 \end{tabular}
 \end{table}
 
-The biggest winner is Client~2. Per-client thresholding lifted its accuracy from 70.1\% to 73.8\% by tuning the decision boundary to its own validation data. But local-only calibration risks overfitting on small validation sets. Federated calibration does better: by blending local thresholds with global statistics, it reaches 72.5\% average F1---4.2\% above the global baseline---without inflating false positives. FigureFigure~8 shows the confusion matrices: federated calibration cuts false negatives (missed malicious insiders) across all three clients.
+The biggest winner is Client~2. Per-client thresholding lifted its accuracy from 70.1\% to 73.8\% by tuning the decision boundary to its own validation data. But local-only calibration risks overfitting on small validation sets. Federated calibration does better: by blending local thresholds with global statistics, it reaches 72.5\% average F1---4.2\% above the global baseline---without inflating false positives. Figure~8 shows the confusion matrices: federated calibration cuts false negatives (missed malicious insiders) across all three clients.
 
 \begin{figure}[H]
 \centering
@@ -661,7 +661,7 @@ The biggest winner is Client~2. Per-client thresholding lifted its accuracy from
 
 \subsection{Statistical Validation}
 
-We applied the DeLong test~[44] to compare AUC-ROC curves for the best-performing LSTM + FedProx configuration (TableTable~10). The test is non-parametric and makes no assumptions about score distributions, which suits our setting well.
+We applied the DeLong test~[44] to compare AUC-ROC curves for the best-performing LSTM + FedProx configuration (Table~10). The test is non-parametric and makes no assumptions about score distributions, which suits our setting well.
 
 \begin{table}[H]
 \caption{DeLong test results comparing AUC-ROC curves across training paradigms for LSTM.}
@@ -680,7 +680,7 @@ FedProx vs Local & \textbf{0.008} & 0.072 & \textbf{0.031} & Yes (C1, C3) \\
 
 Two findings stand out. First, Centralized vs.\ FedProx shows no significant difference on any client (all $p > 0.05$). In plain terms: the federated model matches what you would get by pooling all data in one place---without actually doing so. That is the headline result.
 
-Second, FedProx significantly outperforms Local training on Clients~1 ($p = 0.008$) and~3 ($p = 0.031$). Client~2 approaches but does not cross the $\alpha = 0.05$ threshold ($p = 0.072$). This near-miss is not unusual for the smallest dataset in a federation; Elshenawy et al.~[36] reported the same pattern with their smallest imaging dataset. Taken together with the consistent accuracy gains in TableTable~7, the evidence strongly favors FedProx over isolated local training.
+Second, FedProx significantly outperforms Local training on Clients~1 ($p = 0.008$) and~3 ($p = 0.031$). Client~2 approaches but does not cross the $\alpha = 0.05$ threshold ($p = 0.072$). This near-miss is not unusual for the smallest dataset in a federation; Elshenawy et al.~[36] reported the same pattern with their smallest imaging dataset. Taken together with the consistent accuracy gains in Table~7, the evidence strongly favors FedProx over isolated local training.
 
 \begin{figure}[H]
 \centering
@@ -711,7 +711,7 @@ Our experiments confirm that federated learning works for cross-organizational i
 
 \textbf{Heterogeneity-Aware Aggregation.} FedProx won every head-to-head comparison with FedAvg, and the gap widened with heterogeneity. In the three-client setting, LSTM + FedProx hit 75.8\% average accuracy against FedAvg's 71.8\%---a 4.0-point spread attributable to the proximal term. The mechanism is straightforward: when Client~3's shift-based behavioral patterns clash with Client~1's after-hours profile, standard FedAvg lets local models over-specialize, producing updates that fight each other during aggregation. The proximal term constrains that drift. Elshenawy et al.~[36] saw the same pattern in medical imaging with comparable JSD values, which suggests that proximal regularization is not domain-specific---it works whenever client distributions diverge meaningfully.
 
-\textbf{Proximal Term Sensitivity.} The sweep across $\mu \in \{0.001, 0.01, 0.1, 1.0\}$ (TableTable~8, FigureFigure~7) produced a clean inverted U. At $\mu = 0.001$, clients drift too far apart---73.2\% accuracy. At $\mu = 1.0$, the penalty crushes local adaptation, and the model cannot accommodate legitimate behavioral differences---72.4\%. The peak sits at $\mu = 0.01$ (75.8\%, F1 70.4\%), with $\mu = 0.1$ close behind (74.9\%). So the method is stable across a decade of $\mu$ values but collapses at the tails. Li et al.~[20] predicted this: the optimal $\mu$ tracks heterogeneity, and pushing it too high penalizes useful local diversity. The worst damage at $\mu = 1.0$ fell on Client~3 (Manufacturing), whose distinctive shift patterns were most suppressed by heavy regularization.
+\textbf{Proximal Term Sensitivity.} The sweep across $\mu \in \{0.001, 0.01, 0.1, 1.0\}$ (Table~8, Figure~7) produced a clean inverted U. At $\mu = 0.001$, clients drift too far apart---73.2\% accuracy. At $\mu = 1.0$, the penalty crushes local adaptation, and the model cannot accommodate legitimate behavioral differences---72.4\%. The peak sits at $\mu = 0.01$ (75.8\%, F1 70.4\%), with $\mu = 0.1$ close behind (74.9\%). So the method is stable across a decade of $\mu$ values but collapses at the tails. Li et al.~[20] predicted this: the optimal $\mu$ tracks heterogeneity, and pushing it too high penalizes useful local diversity. The worst damage at $\mu = 1.0$ fell on Client~3 (Manufacturing), whose distinctive shift patterns were most suppressed by heavy regularization.
 
 \textbf{Client-Specific Benefits.} Federation helped clients unequally. Client~2 (Healthcare)---smallest dataset (3,847 samples), worst class balance---gained the most (+3.4\% accuracy under FedProx vs.\ Local). That matches the theoretical expectation: data-poor clients benefit most from the global model, which injects behavioral representations learned from richer datasets~[19]. Client~1 (Financial), with better local data quality, gained less. This asymmetry creates a natural incentive for participation: small organizations, facing the toughest detection problems, stand to gain the most from joining a federation.
 
@@ -723,13 +723,13 @@ USB usage patterns illustrate the same problem. Client~1 averages 4.7 USB insert
 
 \textbf{Validity of Synthetic Benchmark Data.} The CERT dataset is synthetic. We acknowledge this openly, but it does not invalidate our results for the question we are asking. CERT has served as the primary insider threat benchmark for over a decade, appearing in more than 120 published studies~[10]. Its attack scenarios were designed by domain experts drawing on real cases from the intelligence community and financial sector~[37,3]. For our specific research question---can FL handle cross-organizational behavioral heterogeneity?---what matters is the distributional difference between client partitions, not whether individual log entries are synthetic or real. We engineered those differences from genuinely distinct data sources (CERT r4.2, r5.2, and LANL) with measured heterogeneity (JSD 0.174--0.312). The LANL dataset, which contains real enterprise network data, ensures that at least one client draws from authentic organizational activity. And because the community uses CERT as a common reference, our results can be compared directly against the large body of existing work.
 
-\textbf{Threshold Calibration and Operational Relevance.} The client-adaptive threshold mechanism---our main methodological contribution---shows that tailoring decision boundaries to organizational context matters for balanced detection across heterogeneous clients. Federated calibration improved average F1 by 4.2\% over the global fixed threshold, and it preserves privacy: clients share only class-conditional means and variances, not raw predictions or model weights. In operations, a small healthcare SOC handling 50 daily alerts needs much higher precision than a large financial institution processing millions of transactions, where even a low false positive rate generates thousands of alerts. The federated calibration accommodates both within a single framework. The threshold formula (EquationEquation~5) blends local and global information through $\alpha = 0.3$, selected from a sweep over $\alpha \in \{0.1, 0.3, 0.5, 0.7\}$ on validation data, where $\alpha = 0.3$ gave the best trade-off between client-specific fidelity and cross-organizational sharing.
+\textbf{Threshold Calibration and Operational Relevance.} The client-adaptive threshold mechanism---our main methodological contribution---shows that tailoring decision boundaries to organizational context matters for balanced detection across heterogeneous clients. Federated calibration improved average F1 by 4.2\% over the global fixed threshold, and it preserves privacy: clients share only class-conditional means and variances, not raw predictions or model weights. In operations, a small healthcare SOC handling 50 daily alerts needs much higher precision than a large financial institution processing millions of transactions, where even a low false positive rate generates thousands of alerts. The federated calibration accommodates both within a single framework. The threshold formula (Equation~5) blends local and global information through $\alpha = 0.3$, selected from a sweep over $\alpha \in \{0.1, 0.3, 0.5, 0.7\}$ on validation data, where $\alpha = 0.3$ gave the best trade-off between client-specific fidelity and cross-organizational sharing.
 
 \textbf{Comparison with Prior Work.} Our results extend FL cybersecurity findings into a harder domain. Popoola et al.~[22] reached ~91\% accuracy for federated IoT intrusion detection, but with relatively homogeneous traffic. Li et al.~[23] reported 93.2\% on NSL-KDD with federated CNNs, though performance dropped under non-IID conditions. Our task is fundamentally tougher: behavioral baselines differ across organizational types (not just network segments), and 4--5\% malicious rates make accuracy less informative than F1. Against Kim et al.~[29], who got 68.4\% accuracy with FedAvg and a single MLP on one dataset, our LSTM + FedProx reaches 75.8\% across genuinely heterogeneous sources---7.4 points higher, due to both the better architecture and the heterogeneity-aware aggregation. FedProx's consistent superiority across our experiments reinforces the recommendation by Li et al.~[20]: proximal regularization should be the default for heterogeneous FL.
 
 \textbf{Scalability Considerations.} Three clients demonstrate the heterogeneity problem; real deployments would involve dozens. The Flower framework scales well: each round transmits only model parameters---about 9.4~MB for LSTM ($2 \times 128$ hidden units $\approx$ 2.35M parameters $\times$ 4~bytes/float32), 3.6~MB for MLP (256$\rightarrow$128$\rightarrow$64, $\approx$ 0.9M parameters), 6.7~MB for 1D-CNN (3 conv blocks, $\approx$ 1.68M parameters). Over 10 rounds, total transfer per client stays under 100~MB. A 10-client federation with similar architectures would remain under 1~GB total, well within enterprise network capacity. But more clients mean higher update variance, possibly requiring larger $\mu$ or alternative strategies like SCAFFOLD~[30]. Incentive alignment also gets harder: free-riding clients that train minimally while benefiting from the global model could drag down overall quality~[19].
 
-\textbf{Limitations.} We note several. First, CERT is synthetic; validation on proprietary enterprise data would strengthen the conclusions, despite CERT's status as the community standard. Second, three clients is a simplified federation---real deployments involve dozens or hundreds of organizations. Third, we do not address adversarial scenarios such as model poisoning~[46]. Fourth, the communication overhead of federated training was not systematically benchmarked against centralized approaches under resource constraints. Fifth, all results come from a single deterministically seeded execution (seed 42). We did not run multiple seeds because the 47 full federated experiments were computationally expensive. Standard deviations in TablesTable~4--Table~6 and TableTable~7 reflect bootstrap resampling variance (1,000 iterations on the held-out test set), not inter-run variance. Sixth, the threshold calibration mechanism was evaluated primarily at $\alpha = 0.3$, selected from a coarse sweep over $\{0.1, 0.3, 0.5, 0.7\}$; a finer or adaptive selection could yield further gains.
+\textbf{Limitations.} We note several. First, CERT is synthetic; validation on proprietary enterprise data would strengthen the conclusions, despite CERT's status as the community standard. Second, three clients is a simplified federation---real deployments involve dozens or hundreds of organizations. Third, we do not address adversarial scenarios such as model poisoning~[46]. Fourth, the communication overhead of federated training was not systematically benchmarked against centralized approaches under resource constraints. Fifth, all results come from a single deterministically seeded execution (seed 42). We did not run multiple seeds because the 47 full federated experiments were computationally expensive. Standard deviations in Tables~4--Table~6 and Table~7 reflect bootstrap resampling variance (1,000 iterations on the held-out test set), not inter-run variance. Sixth, the threshold calibration mechanism was evaluated primarily at $\alpha = 0.3$, selected from a coarse sweep over $\{0.1, 0.3, 0.5, 0.7\}$; a finer or adaptive selection could yield further gains.
 
 \section{Conclusions and Future Work}
 
